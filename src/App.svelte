@@ -13,13 +13,18 @@
 
   import SettingTesting from './routes/testing/settingTesting.svelte'
   import PlayerTesting from './routes/testing/testingProfiles.svelte'
-  import NewGame from './routes/game/NewGame.svelte';
+  import NewGame from './routes/game/newGame.svelte';
+  import PlayGame from './routes/game/playGame.svelte';
+  import AllProfiles from './routes/profiles/allProfiles.svelte';
   
   const routes = {
     '/': Home,
     '/testing/settingtesting': SettingTesting,
     '/testing/profiles': PlayerTesting,
     '/game/new': NewGame,
+    '/game/play/:gameid': PlayGame,
+    '/profiles': AllProfiles, //All Profiles Showing here
+    // '/profiles/profile/:userid': ProfileInfo, //Showing the specific params of one user
 
     '*': NotFound, //Fallback/Error/404 Route
   };
@@ -27,7 +32,7 @@
 </script>
 
 
-<div class="w-screen h-screen bg-sky-950 flex flex-col overflow-hidden">
+<div class="w-screen h-screen min-w-96 min-h-96 bg-sky-950 flex flex-col overflow-hidden">
   <!-- Navbar -->
   <nav class="bg-base-200 flex h-16">
     <div class="h-full w-full max-w-20">
@@ -58,8 +63,8 @@
           <!-- Sidebar content here -->
           <li><a href="#/" class="link text-blue-500 text-3xl">Home</a></li>
           <li></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl">Players</a></li>
           <li><a href="#/game/new" class="link text-blue-400 text-2xl">Start a New Game</a></li>
+          <li><a href="#/profiles" class="link text-blue-400 text-2xl">Players</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl">Statistics</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl">Scoreboard</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl">History</a></li>

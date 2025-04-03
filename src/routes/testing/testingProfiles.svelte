@@ -6,7 +6,7 @@
 
     function addPlayer(){
         if(playerName.replaceAll(' ', '').length > 0){
-            const id = Math.floor(Math.random() * 9999) + 1; 
+            const id = Math.floor(Math.random() * 999999) + 5; 
             const age = Math.floor(Math.random() * 100) + 18; 
             $players = [...$players, {id:id, name: playerName, age: age}]
             playerName = ''

@@ -2,10 +2,6 @@
     import { currentGameSettings, EnterRules, GameModes, FinishingRule } from "../../lib/stores/gameSettings";
     import { players } from "../../lib/stores/profiles";
     
-    let arr = new Array(50)
-    arr.fill(99999)
-
-    let showPlayerSelection = true
 
     function removePlayerFromSelection(p){
         currentGameSettings.update(state => {
@@ -53,11 +49,24 @@
     $:if($currentGameSettings.maxRounds === 0){
         noRoundLimit = true
     }
+
+    function startgame(){
+        if($currentGameSettings.selected_players.length > 0){
+            const gameId = Math.floor(Math.random() * 999999999999999) + 1;
+            window.location.href = `#/game/play/:${gameId}`;
+        }
+    }
+
+
+    // TODO:: Make a List of GameIDs where the new games are pushed to at the end and for future performance issues (?) we delete the first few games from time to time
+    //          Maybe make a function to clear game history 
+
+
 </script>
 
 <div class="flex h-full w-full">
     <div class="w-3/5 h-screen flex m-auto gap-x-2">
-        <div class="flex flex-col h-4/5 w-full m-auto bg-gray-500/50 rounded-lg pt-2 pl-5 overflow-y-auto">
+        <div class="flex flex-col h-4/5 w-full m-auto bg-gray-500/75 rounded-lg pt-2 pl-5 overflow-y-auto">
             <!-- <h1 class="text-3xl underline font-bold">Settings</h1> -->
             <!-- <button class="btn btn-success" on:click={()=>{console.log($currentGameSettings)}}>LOG</button> -->
 
@@ -155,7 +164,7 @@
 
             <div class="flex mt-auto ml-auto p-5 gap-2">
                 <a href="#/" class="btn btn-error">Cancel</a>
-                <button class="btn btn-success">Play</button>
+                <button class="btn btn-success" on:click={startgame}>Play</button>
             </div>
         </div>
 
