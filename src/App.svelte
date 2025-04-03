@@ -24,6 +24,7 @@
     '/game/new': NewGame,
     '/game/play/:gameid': PlayGame,
     '/profiles': AllProfiles, //All Profiles Showing here
+    '/profiles/:new': AllProfiles, //All Profiles Showing here
     // '/profiles/profile/:userid': ProfileInfo, //Showing the specific params of one user
 
     '*': NotFound, //Fallback/Error/404 Route

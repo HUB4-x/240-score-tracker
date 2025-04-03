@@ -1,4 +1,5 @@
 <script>
+    import { onMount } from "svelte";
     import { players } from "../../lib/stores/profiles";
 
 
@@ -13,10 +14,19 @@
      *      - Color
      *      - Overall Points 
     */
-
-
+    let addnewparam = false
     let show_addPlayerModal = false
     let show_RemovePlayerModal = false
+
+    onMount(()=>{
+        const tmpArr = window.location.href.split(':')
+        console.log(tmpArr)
+        addnewparam = tmpArr[tmpArr.length-1] === 'new'
+        if(addnewparam){
+            show_addPlayerModal = true
+        }
+    })
+
 
     let toBeRemovedPlayer = {}
 
@@ -63,7 +73,7 @@
 </script>
 
 
-<div class="w-full h-full flex min-w-96 min-h-96">
+<div class="w-full h-screen flex min-w-96 min-h-96">
     <div class="flex flex-col w-3/5 h-4/6 min-w-96 m-auto bg-base-100 rounded">
         
 
