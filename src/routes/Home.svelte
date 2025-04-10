@@ -1,6 +1,6 @@
 <script>
     import { settings } from '../lib/stores/settings';
-    import { players } from '../lib/stores/profiles';
+    import { userDB } from '../lib/stores/userAPI';
     // Import History
     // Import Scoreboard
 </script>

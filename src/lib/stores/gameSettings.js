@@ -28,7 +28,10 @@ export const currentGameSettings = createLocalStorageStore('gameSettings', {
     gameMode: '_301',
     enterRule: 'STRAIGHT_IN',
     finishRule: 'STRAIGHT_OUT',
-    maxRounds: 0,
-    selected_players: [{id:69, name:'Dummy', age: 0}], //The players that are playing the game. This array should be ordered by the playing order
+    maxRounds: 0, //0 equals infinit rounds
+    selected_players: [], //The players that are playing the game. This array should be ordered by the playing order
     casual: false, //Wether or not it should count into the statistics
+    rounds: 0, 
+    finished: false,
+    winner: undefined, //Only set at the end of the game
 })

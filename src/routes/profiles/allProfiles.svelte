@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { players } from "../../lib/stores/profiles";
+    import { userDB } from "../../lib/stores/userAPI";
 
 
     /**
@@ -38,22 +38,23 @@
         // check inputs
         if(newPlayer_Name.replaceAll(' ', '').length >= 2){
             // add player to players
-            const id = Math.floor(Math.random() * 999999) + 5; 
-            const age = Math.floor(Math.random() * 100) + 18; 
-            $players = [...$players, 
-                {
-                    id:id, 
-                    name: newPlayer_Name, 
-                    abrv: newPlayer_Abrv,
-                    wins: 0,
-                    loss: 0,
-                    avg: 0,
-                    overall_points: 0,
-                    highest_round: 0,
-                    highest_finish: 0,
-                    last_game: -1,
-                }
-            ]
+            // const id = Math.floor(Math.random() * 999999) + 5; 
+            // $userDB = [...$userDB, 
+            //     {
+            //         id:id, 
+            //         name: newPlayer_Name, 
+            //         abrv: newPlayer_Abrv,
+            //         isGuest: false,
+            //         wins: 0,
+            //         loss: 0,
+            //         avg: 0,
+            //         overall_points: 0,
+            //         highest_round: 0,
+            //         highest_finish: 0,
+            //         last_game: -1,
+            //     }
+            // ]
+            userDB.addUser(newPlayer_Name, newPlayer_Abrv)
 
             // Closemodal
             show_addPlayerModal = false
@@ -65,7 +66,8 @@
     }
 
     function removePlayer(){
-        players.update(players => players.filter(player => player.id !== toBeRemovedPlayer.id))
+        // userDB.update(players => players.filter(player => player.id !== toBeRemovedPlayer.id))
+        userDB.deleteUser(toBeRemovedPlayer.id)
         toBeRemovedPlayer = {}
         show_RemovePlayerModal = false
     }
@@ -74,14 +76,15 @@
 
 
 <div class="w-full h-screen flex min-w-96 min-h-96">
-    <div class="flex flex-col w-3/5 h-4/6 min-w-96 m-auto bg-base-100 rounded">
+    <div class="flex flex-col w-3/5 h-4/6 min-w-96 mx-auto mt-20 bg-base-100 rounded">
         
 
         <ul class="list w-full h-full overflow-y-auto">
             
 
-            {#each $players as player}
-            {#if !player.isGast && player.id >= 5}
+            {#each $userDB as player}
+            <!-- <button class="btn btn-info" on:click={()=>{userDB.updateUser(player.id, {name: 'TESTTEST'})}}>LOG</button> -->
+            {#if !player.isGuest}
             <li class="list-row max-h-20 flex">
                 <div class="flex-none w-10 h-full flex select-none">
                     <!-- Either IMG or KBD with Initials in picked color -->
@@ -165,7 +168,9 @@
                     <input type="text" class="input w-full" placeholder="Abbrevation (Optional)" bind:value={newPlayer_Abrv} maxlength="2" minlength="0">
                 </div>
                 <div class="modal-action">
-                <label for="addNewPlayerModal" class="btn btn-error">Cancel</label>
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                <label for="addNewPlayerModal" class="btn btn-error" on:click={()=>{window.location.href = '#/profiles'}}>Cancel</label>
                 <button type="submit" class="btn btn-success {newPlayer_Name.replaceAll(' ', '').length < 2? 'btn-disabled' : ''}" on:click={()=>{addPlayer()}}>Add</button>
                 </div>
             </form>

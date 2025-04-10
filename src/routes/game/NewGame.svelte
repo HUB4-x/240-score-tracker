@@ -1,7 +1,18 @@
 <script>
+    import { onMount } from "svelte";
     import { currentGameSettings, EnterRules, GameModes, FinishingRule } from "../../lib/stores/gameSettings";
-    import { players } from "../../lib/stores/profiles";
+    import { userDB } from "../../lib/stores/userAPI";
     
+
+    onMount(()=>{
+        currentGameSettings.update(state => {
+            return {
+                ...state, 
+                selected_players: [],
+            }
+        })
+    })
+
 
     function removePlayerFromSelection(p){
         currentGameSettings.update(state => {
@@ -17,7 +28,7 @@
             currentGameSettings.update(state => {
                 return {
                     ...state,
-                    selected_players: [...$currentGameSettings.selected_players, p]
+                    selected_players: [...$currentGameSettings.selected_players, {...p, throws: []}]
                 }
             })
         }
@@ -52,7 +63,13 @@
 
     function startgame(){
         if($currentGameSettings.selected_players.length > 0){
-            const gameId = Math.floor(Math.random() * 999999999999999) + 1;
+            const gameId = Math.floor(Math.random() * 999999) + 1;
+            currentGameSettings.update(state => {
+                return {
+                    ...state,
+                    id: gameId,
+                }
+            })
             window.location.href = `#/game/play/:${gameId}`;
         }
     }
@@ -66,7 +83,7 @@
 
 <div class="flex h-full w-full">
     <div class="w-3/5 h-screen flex m-auto gap-x-2">
-        <div class="flex flex-col h-4/5 max-h-[800px] w-full m-auto bg-gray-500/75 rounded-lg pt-2 pl-5 overflow-y-auto">
+        <div class="flex flex-col h-4/5 max-h-[800px] w-full mx-auto mt-20 bg-gray-500/75 rounded-lg pt-2 pl-5 overflow-y-auto">
             <!-- <h1 class="text-3xl underline font-bold">Settings</h1> -->
             <!-- <button class="btn btn-success" on:click={()=>{console.log($currentGameSettings)}}>LOG</button> -->
 
@@ -170,10 +187,10 @@
 
         
 
-        <div class="w-40 h-4/5 flex-none my-auto overflow-hidden">
+        <div class="w-40 h-4/5 flex-none my-auto mt-20 overflow-hidden">
             <div class="flex flex-col w-full h-full overflow-hidden">
                 <div class=" w-full overflow-y-auto">
-                {#each $players as p}
+                {#each $userDB as p}
                 {#if !checkIfPlayerAlreadySelected(p)}
                     <button class="btn btn-block flex gap-x-2" on:click={()=>{addPlayerToSelection(p)}}>
                         <p class="truncate">{p.name}</p>

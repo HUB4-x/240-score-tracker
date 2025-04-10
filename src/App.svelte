@@ -30,6 +30,20 @@
     '*': NotFound, //Fallback/Error/404 Route
   };
 
+  function getLocalStorageSize() {
+        // Max storage size is (for most browsers 5000kb)
+        let total = 0;
+        for (let key in localStorage) {
+            if (!localStorage.hasOwnProperty(key)) continue;
+            const value = localStorage.getItem(key);
+            total += key.length + value.length;
+        }
+        // Each character ≈ 2 bytes
+        return (total * 2 / 1024).toFixed(2) + ' KB';
+    }
+
+    console.log('LocalStorage used:', getLocalStorageSize(), ' of 5000 KB');
+
 </script>
 
 
@@ -53,7 +67,7 @@
 
     <div class="drawer w-full h-full">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
-      <div class="drawer-content flex h-full w-full">
+      <div class="drawer-content flex h-screen w-screen">
         <!-- Page content here -->
         <Router {routes} />
         <!-- <label for="my-drawer" class="btn btn-base-200 drawer-button">Open</label> -->
