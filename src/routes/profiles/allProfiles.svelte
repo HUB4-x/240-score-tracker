@@ -80,7 +80,7 @@
         
 
         <ul class="list w-full h-full overflow-y-auto">
-            
+            <button class="btn btn-warning">TESt</button>
 
             {#each $userDB as player}
             <!-- <button class="btn btn-info" on:click={()=>{userDB.updateUser(player.id, {name: 'TESTTEST'})}}>LOG</button> -->

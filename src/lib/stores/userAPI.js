@@ -1,5 +1,5 @@
 // import { createLocalStorageStore } from "./storeMGMT";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import {sha256} from 'js-sha256';
 
 
@@ -27,42 +27,44 @@ const colorArr = [
     "rose-200"
   ];
 
-
-
-export const userDB = createLocalStorageStore(dbName, [
+  const defaultUserSet = [
     {
-        id: 1,
+        id: '1',
         // id: sha256('1').slice(0, 8),
         name: 'Gast 1',
         isGuest: true,
-        color: 'red',
+        color: colorArr[1],
         abrv: 'G1',
     },
     {
-        id: 2,
+        id: '2',
         // id: sha256('2').slice(0, 8),
         name: 'Gast 2',
         isGuest: true,
-        color: 'green', 
+        color: colorArr[2], 
         abrv: 'G2',
     },
     {
-        id: 3,
+        id: '3',
         // id: sha256('3').slice(0, 8),
         name: 'Gast 3',
         isGuest: true,
-        color: 'purple',
+        color: colorArr[3],
         abrv: 'G3',
     },
     {
-        id: 4,
+        id: '4',
         // id: sha256('4').slice(0, 8),
         name: 'Gast 4',
         isGuest: true,
-        color: 'yellow',
+        color: colorArr[4],
         abrv: 'G4',
     },
-]);
+]
+
+
+
+export const userDB = createLocalStorageStore(dbName, defaultUserSet);
 
 function createLocalStorageStore(key, initialValue) {
     let value = initialValue;
@@ -89,9 +91,18 @@ function createLocalStorageStore(key, initialValue) {
         ...store,
 
         //########################################################
-        getUser: (id) => {/**Add function here to get a user by an ID */},
-
-        getAllUser: () => {console.log('here are all the users')},
+        getUser: (id) => {
+            if(id){
+                const tmp = get(store).find(user => {
+                    if(user.id === id) {
+                        return true
+                    } else {
+                        return false
+                    }
+                })
+                return tmp
+            }
+        },
 
         addUser: (name, abrv, color) => {
             if(name){
@@ -151,7 +162,9 @@ function createLocalStorageStore(key, initialValue) {
             }
         },
 
-        deleteAllUser: () => {},
+        deleteAllUser: () => {
+            store.update(userDB => userDB = defaultUserSet)
+        },
         //########################################################
     };
 }
