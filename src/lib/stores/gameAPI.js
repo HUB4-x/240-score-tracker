@@ -20,7 +20,7 @@ class GameAPI {
 
     static getSavedGame(gameID){
         const gameList = this.getAllSavedGames()
-        const tmp_game = gameList.find(game => game.ID === gameID)
+        const tmp_game = gameList.find(game => game.id === gameID)
         return tmp_game
     }
 
@@ -52,7 +52,9 @@ class GameAPI {
     }
 
     static createNewGame(game){
-        localStorage.setItem(`game_${game.ID}`, JSON.stringify(game))
+        localStorage.setItem(`game_${game.id}`, JSON.stringify(game))
+        const currentRunningGameIDList = this.getAllCurrentGameIDs()
+        localStorage.setItem('RunningGamesList', JSON.stringify([...currentRunningGameIDList, game.id]))
     }
 
     static updateCurrentGame(gameID, game){
@@ -72,7 +74,7 @@ class GameAPI {
     static deleteSavedGame(gameID){
         const gameList = this.getAllSavedGames()
         gameList.filter(game => {
-            if(game.ID === gameID){
+            if(game.id === gameID){
                 return false
             } else {
                 return true
@@ -94,3 +96,5 @@ class GameAPI {
 
 
 }
+
+export default GameAPI;

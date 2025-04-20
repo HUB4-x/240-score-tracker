@@ -2,19 +2,110 @@
     import { onMount } from "svelte";
     import { currentGameSettings, EnterRules, GameModes, FinishingRule } from "../../lib/stores/gameSettings";
     import { userDB } from "../../lib/stores/userAPI";
+    import {sha256} from 'js-sha256';
+    import GameAPI from "../../lib/stores/gameAPI";
+    import { writable } from "svelte/store";
     
+    const defaultGame = {
+        gameMode: '_301',
+        enterRule: 'STRAIGHT_IN',
+        finishRule: 'STRAIGHT_OUT',
+        maxRounds: 0, //0 equals infinit rounds
+        players: [], //The players that are playing the game. This array should be ordered by the playing order
+        casual: false, //Wether or not it should count into the statistics
+        rounds: 0, 
+        finished: false,
+        winner: undefined, //Only set at the end of the game
+        id: sha256(generateNewGameID(100)).slice(0,32),
+        score: {},
+    }
+
+    let newGame = defaultGame
+
+    function generateNewGameID(length = 8) {
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        const burnedGameIDs = GameAPI.getAllCurrentGameIDs()
+        if(burnedGameIDs.includes(result)){
+            return generateNewGameID()
+        } else {
+            return result;
+        }
+    }
 
     onMount(()=>{
-        currentGameSettings.update(state => {
-            return {
-                ...state, 
-                selected_players: [],
-            }
-        })
+        // currentGameSettings.update(state => {
+        //     return {
+        //         ...state, 
+        //         selected_players: [],
+        //     }
+        // })
+
     })
 
 
     function removePlayerFromSelection(p){
+        newGame.players = newGame.players.filter(player => {
+            if(player.id === p.id) {
+                return false
+            } else {
+                return true
+            }
+        })
+        // currentGameSettings.update(state => {
+        //     return {
+        //         ...state,
+        //         selected_players: state.selected_players.filter(player => player.id !== p.id)
+        //     }
+        // })
+    }
+
+    function addPlayerToSelection(p){
+        if(!checkIfPlayerAlreadySelected(p)){
+            newGame.players = [...newGame.players, p]
+        }
+    }
+
+    function checkIfPlayerAlreadySelected(p){
+        let tmp = []
+        tmp = newGame.players
+        return tmp.some(player => player.id === p.id)
+    }
+
+    function randomizeOrder(){
+        let tmp = []
+        tmp = newGame.players
+        // console.log(`${tmp[0].name}, ${tmp[1].name}, ${tmp[2].name}, ${tmp[3].name}, ${tmp[4].name}`)
+        tmp.sort(()=>{
+            return Math.random()-0.5;
+        })
+        // console.log(`${tmp[0].name}, ${tmp[1].name}, ${tmp[2].name}, ${tmp[3].name}, ${tmp[4].name}`)
+        newGame.players = tmp
+    }
+
+    let noRoundLimit = false
+    $:if(newGame.maxRounds === 0){
+        noRoundLimit = true
+    }
+
+    function startgame(){
+        if(newGame.players.length > 0){
+            GameAPI.createNewGame(newGame)
+            window.location.href = `#/game/play/:${newGame.id}`;
+        }
+    }
+
+
+    /**
+     * ################################################################################################
+     * ################################################################################################
+     * ################################################################################################
+     * 
+     */
+    function removePlayerFromSelection_OLD(p){
         currentGameSettings.update(state => {
             return {
                 ...state,
@@ -23,8 +114,8 @@
         })
     }
 
-    function addPlayerToSelection(p){
-        if(!checkIfPlayerAlreadySelected(p)){
+    function addPlayerToSelection_OLD(p){
+        if(!checkIfPlayerAlreadySelected_OLD(p)){
             currentGameSettings.update(state => {
                 return {
                     ...state,
@@ -34,13 +125,13 @@
         }
     }
 
-    function checkIfPlayerAlreadySelected(p){
+    function checkIfPlayerAlreadySelected_OLD(p){
         let tmp = []
         tmp = $currentGameSettings.selected_players
         return tmp.some(player => player.id === p.id)
     }
 
-    function randomizeOrder(){
+    function randomizeOrder_OLD(){
         let tmp = []
         tmp = $currentGameSettings.selected_players
         // console.log(`${tmp[0].name}, ${tmp[1].name}, ${tmp[2].name}, ${tmp[3].name}, ${tmp[4].name}`)
@@ -56,12 +147,14 @@
         })
     }
 
-    let noRoundLimit = false
-    $:if($currentGameSettings.maxRounds === 0){
-        noRoundLimit = true
-    }
 
-    function startgame(){
+    
+    // let noRoundLimit = false
+    // $:if($currentGameSettings.maxRounds === 0){
+    //     noRoundLimit = true
+    // }
+
+    function startgame_OLD(){
         if($currentGameSettings.selected_players.length > 0){
             const gameId = Math.floor(Math.random() * 999999) + 1;
             currentGameSettings.update(state => {
@@ -73,6 +166,13 @@
             window.location.href = `#/game/play/:${gameId}`;
         }
     }
+
+    /**
+     * ################################################################################################
+     * ################################################################################################
+     * ################################################################################################
+     * 
+     */
 
 
     // TODO:: Make a List of GameIDs where the new games are pushed to at the end and for future performance issues (?) we delete the first few games from time to time
@@ -92,7 +192,8 @@
                 <div class="ml-5">
                     <div class="flex gap-2 flex-wrap">
                         <!-- Players -->
-                        {#each $currentGameSettings.selected_players as player, index}
+                        {#each newGame.players as player, index}
+                        <!-- {#each $currentGameSettings.selected_players as player, index} -->
                             <button class="rounded-lg bg-base-100 btn btn-md flex" on:click={()=>{removePlayerFromSelection(player)}}>
                                 <p class="my-auto text-left ml-2 text-sm truncate">{player.name}</p>
                                 <!-- svelte-ignore a11y_consider_explicit_label -->
@@ -114,8 +215,10 @@
                 <div class="ml-5">
                     <div class="flex gap-2 flex-wrap">
                         {#each Object.entries(GameModes) as [GameMode, gamemode]}
-                        <label for="{gamemode}" class="btn btn-sm {$currentGameSettings.gameMode === GameMode? 'btn-success text-black': ''}">
-                            <input type="radio" name="{gamemode}" id="{gamemode}" class="hidden" value="{GameMode}" bind:group={$currentGameSettings.gameMode}>
+                        <label for="{gamemode}" class="btn btn-sm {newGame.gameMode === GameMode? 'btn-success text-black': ''}">
+                        <!-- <label for="{gamemode}" class="btn btn-sm {$currentGameSettings.gameMode === GameMode? 'btn-success text-black': ''}">
+                            <input type="radio" name="{gamemode}" id="{gamemode}" class="hidden" value="{GameMode}" bind:group={$currentGameSettings.gameMode}> -->
+                            <input type="radio" name="{gamemode}" id="{gamemode}" class="hidden" value="{GameMode}" bind:group={newGame.gameMode}>
                             {gamemode}
                         </label>
                         {/each}
@@ -129,8 +232,10 @@
                 <div class="ml-5">
                     <div class="flex gap-2 flex-wrap">
                         {#each Object.entries(EnterRules) as [EnterRule, enterrule]}
-                        <label for="{enterrule}" class="btn btn-sm {$currentGameSettings.enterRule === EnterRule? 'btn-success text-black': ''}">
-                            <input type="radio" name="{enterrule}" id="{enterrule}" class="hidden" value="{EnterRule}" bind:group={$currentGameSettings.enterRule}>
+                        <label for="{enterrule}" class="btn btn-sm {newGame.enterRule === EnterRule? 'btn-success text-black': ''}">
+                            <input type="radio" name="{enterrule}" id="{enterrule}" class="hidden" value="{EnterRule}" bind:group={newGame.enterRule}>
+                        <!-- <label for="{enterrule}" class="btn btn-sm {$currentGameSettings.enterRule === EnterRule? 'btn-success text-black': ''}">
+                            <input type="radio" name="{enterrule}" id="{enterrule}" class="hidden" value="{EnterRule}" bind:group={$currentGameSettings.enterRule}> -->
                             {enterrule}
                         </label>
                         {/each}
@@ -144,8 +249,10 @@
                 <div class="ml-5">
                     <div class="flex gap-2 flex-wrap">
                         {#each Object.entries(FinishingRule) as [FinishRule, finishrule]}
-                        <label for="{finishrule}" class="btn btn-sm {$currentGameSettings.finishRule === FinishRule? 'btn-success text-black': ''}">
-                            <input type="radio" name="{finishrule}" id="{finishrule}" class="hidden" value="{FinishRule}" bind:group={$currentGameSettings.finishRule}>
+                        <label for="{finishrule}" class="btn btn-sm {newGame.finishRule === FinishRule? 'btn-success text-black': ''}">
+                            <input type="radio" name="{finishrule}" id="{finishrule}" class="hidden" value="{FinishRule}" bind:group={newGame.finishRule}>
+                        <!-- <label for="{finishrule}" class="btn btn-sm {$currentGameSettings.finishRule === FinishRule? 'btn-success text-black': ''}">
+                            <input type="radio" name="{finishrule}" id="{finishrule}" class="hidden" value="{FinishRule}" bind:group={$currentGameSettings.finishRule}> -->
                             {finishrule}
                         </label>
                         {/each}
@@ -164,7 +271,8 @@
                     </div> -->
                     <input type="checkbox" aria-label="No Round Limit" class="btn btn-sm checked:btn-success" bind:checked={noRoundLimit}>
                     {:else}
-                    <input class="bg-base-300 px-2 w-32" type="number" name="" id="" bind:value={$currentGameSettings.maxRounds} min="0">
+                    <input class="bg-base-300 px-2 w-32" type="number" name="" id="" bind:value={newGame.maxRounds} min="0">
+                    <!-- <input class="bg-base-300 px-2 w-32" type="number" name="" id="" bind:value={$currentGameSettings.maxRounds} min="0"> -->
                     {/if}
                 </div>
             </div>
@@ -174,14 +282,16 @@
                 <button class="text-xl mr-auto font-bold mb-1">Casual:</button>
                 <div class="ml-5">
                     <p class="text-sm text-gray-200/70">Info: If you choose to play casual this game will not affect your statistics!</p>
-                    <input type="checkbox" aria-label="Casual" bind:checked={$currentGameSettings.casual} class="btn btn-sm w-fit checked:btn-success">
+                    <input type="checkbox" aria-label="Casual" bind:checked={newGame.casual} class="btn btn-sm w-fit checked:btn-success">
+                    <!-- <input type="checkbox" aria-label="Casual" bind:checked={$currentGameSettings.casual} class="btn btn-sm w-fit checked:btn-success"> -->
                 </div>
             </div>
 
 
             <div class="flex mt-auto ml-auto p-5 gap-2">
                 <a href="#/" class="btn btn-lg btn-error">Cancel</a>
-                <button class="btn btn-lg btn-success {$currentGameSettings.selected_players.length === 0? 'btn-disabled' : ''}" on:click={startgame}>Play</button>
+                <button class="btn btn-lg btn-success {newGame.players.length === 0? 'btn-disabled' : ''}" on:click={startgame}>Play</button>
+                <!-- <button class="btn btn-lg btn-success {$currentGameSettings.selected_players.length === 0? 'btn-disabled' : ''}" on:click={startgame}>Play</button> -->
             </div>
         </div>
 

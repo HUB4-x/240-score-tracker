@@ -1,26 +1,33 @@
 <script>
     import { onDestroy, onMount } from 'svelte';
-    import { currentGameSettings } from '../../lib/stores/gameSettings';
+    import GameAPI from '../../lib/stores/gameAPI';
+    // import { currentGameSettings } from '../../lib/stores/gameSettings';
 
 
-    let gameId = -1
+    let gameId = null
+    const tmpArr = window.location.href.split(':')
+    gameId = tmpArr[tmpArr.length-1]
+    let currentGame = GameAPI.getCurrentGame(''+gameId)
 
 
+    // Current Games TMP Stats
     let currentRound = 1
-    let multiplier = 1
-    let throws = new Array($currentGameSettings.maxRounds === 0? 999 : $currentGameSettings.maxRounds).fill([]) // Here save throws in a row
     let currenPlayerIndex = 0 //Max the number of selected players
     let currentThrowIndex = 0
     let currentThrows = []
-    let playerList = $currentGameSettings.selected_players
+    
+    let multiplier = 1
+    let throws = {}
+    // let throws = new Array($currentGameSettings.maxRounds === 0? 999 : $currentGameSettings.maxRounds).fill([]) // Here save throws in a row
+
+
+    // let playerList = []
+    // let playerList = $currentGameSettings.selected_players
 
 
     onMount(()=>{
-        const tmpArr = window.location.href.split(':')
-        gameId = Number(tmpArr[tmpArr.length-1])
-
-        console.log($currentGameSettings)
-
+        console.log('GameID: ', gameId)
+        console.log(currentGame)
     })
 
     onDestroy(()=>{
@@ -75,7 +82,7 @@
                 // Commit throws
                 throws[(currentRound-1)*currenPlayerIndex] = currentThrows
                 // Reset throw index
-                currenPlayerIndex = (currenPlayerIndex + 1) % playerList.length
+                currenPlayerIndex = (currenPlayerIndex + 1) % currentGame.players.length
                 currentThrowIndex = 0
                 currentThrows = []
                 currentRound += 1
@@ -97,42 +104,66 @@
 <!-- <h1>Game ID: {gameId}</h1> -->
 
 <div class="w-full h-full flex">
-    <div class="w-5/7 h-5/7 m-auto mt-28 bg-gray-600 overflow-y-auto rounded-lg grid grid-cols-10">
-        <div class="w-full h-full col-span-5 flex flex-col">
-            <div class="flex w-fit mr-auto border-b-2 border-r-2 flex p-1 gap-x-2">
-                <p class="pr-1">{$currentGameSettings.gameMode};</p>
+    <div class="w-5/7 h-5/7 m-auto mt-28 bg-gray-600 overflow-y-auto rounded-lg grid grid-cols-10 min-w-2xl flex-none gap-1">
+        <div class="w-full h-full col-span-5 flex flex-col min-w-fit flex-none overflow-x-hidden">
+            <div class="flex w-fit mr-auto border-b-2 border-r-2 flex flex-none overflow-x-hidden p-1 gap-x-2 min-w-fit">
+                <p class="pr-1">{currentGame.gameMode};</p>
+                <p class="pr-1">{currentGame.enterRule};</p>
+                <p class="pr-1">{currentGame.finishRule};</p>
+                <!-- <p class="pr-1">{$currentGameSettings.gameMode};</p>
                 <p class="pr-1">{$currentGameSettings.enterRule};</p>
-                <p class="pr-1">{$currentGameSettings.finishRule};</p>
+                <p class="pr-1">{$currentGameSettings.finishRule};</p> -->
+            </div>
+
+            <div class="w-full h-5 bg-blue-600 flex-none overflow-x-hidden">
+                <!-- LADE BALKEN -->
             </div>
 
             <div class="w-full h-full grid grid-rows-7">
                 <!-- This will have the info about the score of the players -->
                 <div class="bg-red-500 w-full h-full row-span-2">
                     <!-- Current Player -->
-                    <div class="w-full h-full p-2">
-                        {playerList[currenPlayerIndex].name}
-                        <p>{currenPlayerIndex}{playerList.length}</p>
-                        <button class="btn" on:click={()=>{console.log(playerList)}}>LOG</button>
-                        <button class="btn btn-info" on:click={()=>{console.log(throws)}}>LOG</button>
+                    <div class="w-full h-full p-2 flex flex">
+                        <div class="w-fit min-w-28 h-full flex flex-col">
+                            <p class="text-3xl font-bold">{currentGame.players[currenPlayerIndex].name}</p>
+                            <div>
+                                <p>avg: 44.6</p>
+                                <!-- Last throws scores. the index is the current round -1, -2, and -3 -->
+                                <p>r5: 66</p>
+                                <p>r6: 66</p>
+                                <p>r7: 66</p>
+                            </div>
+                        </div>
+                        <div class="h-fit w-full flex gap-x-3 mx-auto my-auto">
+                            <div class="w-full h-full py-3 border-2 border-black"><p class="font-bold text-xl text-black text-center">20</p></div>
+                            <div class="w-full h-full py-3 border-2 border-black"><p class="font-bold text-xl text-black text-center">44</p></div>
+                            <div class="w-full h-full py-3 border-2 border-black"><p class="font-bold text-xl text-black text-center">45</p></div>
+                        </div>
+
+                        <!-- <p>{currenPlayerIndex}----{currentGame.players.length}</p> -->
+                        <!-- <button class="btn" on:click={()=>{console.log(currentGame.players)}}>LOG</button>
+                        <button class="btn btn-info" on:click={()=>{console.log(throws)}}>LOG</button> -->
                         <!-- <button class="btn btn-success" on:click={()=>{}}>LOG</button> -->
                         <!-- [{throws[(currentRound-1)*currenPlayerIndex][0]}]
                         [{throws[(currentRound-1)*currenPlayerIndex][1]}]
                         [{throws[(currentRound-1)*currenPlayerIndex][2]}] -->
-                        {#key currentThrows}
+
+
+                        <!-- {#key currentThrows}
                         {#each currentThrows as t}
                         <p>[{t}]</p>
                         {/each}
-                        {/key}
+                        {/key} -->
 
                     </div>
                 </div>
                 
                 <div class="bg-red-900 w-full h-full row-span-5 flex flex-col">
                     <!-- Other Player Stats -->
-                    {#each playerList as p, index}
+                    {#each currentGame.players as p, index}
                         {#if index !== currenPlayerIndex}
                             <div class="w-full h-full p-2">
-                                <p>{playerList[index].name}</p>
+                                <p>{currentGame.players[index].name}</p>
                             </div>
                         {/if}
                     {/each}
@@ -144,7 +175,7 @@
 
 
 
-        <div class="w-full h-full min-w-96 col-span-5 flex flex-col">
+        <div class="w-full h-full col-span-5 flex flex-col">
             <div class="w-full h-fit flex">
                 <div class="flex ml-auto border-l-2 border-b-2">
                     <p class="ml-auto px-5">{currentRound}</p>
