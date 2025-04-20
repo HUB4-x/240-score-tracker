@@ -25,6 +25,7 @@
 
     onDestroy(()=>{
         // console.log('Here das Spiel ' + gameId +  ' Speichern')
+        //Call GameAPI and save the game
     })
 
 

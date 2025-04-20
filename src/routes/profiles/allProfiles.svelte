@@ -17,12 +17,15 @@
     let addnewparam = false
     let show_addPlayerModal = false
     let show_RemovePlayerModal = false
+    let redirectBack = false
 
     onMount(()=>{
         const tmpArr = window.location.href.split(':')
-        console.log(tmpArr)
+        redirectBack = false
+        // console.log(tmpArr)
         addnewparam = tmpArr[tmpArr.length-1] === 'new'
         if(addnewparam){
+            redirectBack = true
             show_addPlayerModal = true
         }
     })
@@ -171,7 +174,7 @@
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
                 <label for="addNewPlayerModal" class="btn btn-error" on:click={()=>{window.location.href = '#/profiles'}}>Cancel</label>
-                <button type="submit" class="btn btn-success {newPlayer_Name.replaceAll(' ', '').length < 2? 'btn-disabled' : ''}" on:click={()=>{addPlayer()}}>Add</button>
+                <button type="submit" class="btn btn-success {newPlayer_Name.replaceAll(' ', '').length < 2? 'btn-disabled' : ''}" on:click={()=>{addPlayer(); if(redirectBack) window.location.href = '#/game/new'}}>Add</button>
                 </div>
             </form>
         </div>
