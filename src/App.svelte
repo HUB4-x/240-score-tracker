@@ -13,7 +13,7 @@
 
   import SettingTesting from './routes/testing/settingTesting.svelte'
   import PlayerTesting from './routes/testing/testingProfiles.svelte'
-  import NewGame from './routes/game/newGame.svelte';
+  import NewGame from './routes/game/NewGame.svelte';
   import PlayGame from './routes/game/playGame.svelte';
   import AllProfiles from './routes/profiles/allProfiles.svelte';
   
@@ -30,6 +30,8 @@
     '*': NotFound, //Fallback/Error/404 Route
   };
 
+  let storageUsage = 0
+
   function getLocalStorageSize() {
         // Max storage size is (for most browsers 5000kb)
         let total = 0;
@@ -38,11 +40,12 @@
             const value = localStorage.getItem(key);
             total += key.length + value.length;
         }
+        storageUsage = ((total * 2 / 1024)/5000)*100
         // Each character ≈ 2 bytes
         return (total * 2 / 1024).toFixed(2) + ' KB';
-    }
+  }
 
-    console.log('LocalStorage used:', getLocalStorageSize(), ' of 5000 KB');
+  console.log('LocalStorage used:', getLocalStorageSize(), ' of 5000 KB -', storageUsage, '%');
 
 </script>
 
