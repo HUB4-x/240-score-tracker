@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+.logo {
+  background-image: url('assets/logo_3.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

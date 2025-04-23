@@ -54,7 +54,7 @@ class GameAPI {
     }
 
     static createNewGame(game){
-        localStorage.setItem(`game_${game.id}`, JSON.stringify(game))
+        localStorage.setItem(`game_${game.id}`, JSON.stringify({...game, timestamp: this.getFormattedDateTime()}))
         const currentRunningGameIDList = this.getAllCurrentGameIDs()
         localStorage.setItem('RunningGamesList', JSON.stringify([...currentRunningGameIDList, game.id]))
     }
@@ -64,10 +64,10 @@ class GameAPI {
     }
 
     static deleteCurrentGame(gameID){
+        const newRunningGameList = this.getAllCurrentGameIDs().filter(id => id !== gameID);
+        localStorage.setItem('RunningGamesList', JSON.stringify(newRunningGameList))
         try{
             localStorage.removeItem(`game_${gameID}`)
-            const newRunningGameList = this.getAllCurrentGameIDs().filter(id => id !== gameID);
-            localStorage.setItem('RunningGamesList', JSON.stringify(newRunningGameList))
             return true
         } catch (e) {
             console.log(e)
@@ -76,15 +76,7 @@ class GameAPI {
     }
     
     static deleteSavedGame(gameID){
-        const gameList = this.getAllSavedGames()
-        gameList.filter(game => {
-            if(game.id === gameID){
-                return false
-            } else {
-                return true
-            }
-        })
-        console.log('new Saved game list: ', gameList)
+        const gameList = this.getAllSavedGames().filter(game => game.id !== gameID)
         localStorage.setItem('FinishedGames', JSON.stringify(gameList))
     }
 
@@ -99,7 +91,7 @@ class GameAPI {
         }
     }
 
-    static generateNewGameID(length = 8) {
+    static generateNewGameID(length = 8){
         const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let result = '';
         for (let i = 0; i < length; i++) {
@@ -113,6 +105,17 @@ class GameAPI {
             return result;
         }
     }
+
+    static getFormattedDateTime(){
+        const now = new Date();
+        const pad = (n) => n.toString().padStart(2, '0');
+        const day = pad(now.getDate());
+        const month = pad(now.getMonth() + 1); // Months are 0-indexed
+        const year = now.getFullYear();
+        const hours = pad(now.getHours());
+        const minutes = pad(now.getMinutes());
+        return `${day}/${month}/${year} - ${hours}:${minutes}`;
+      }
 
 
 }

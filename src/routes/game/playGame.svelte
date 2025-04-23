@@ -31,7 +31,6 @@
     let currentPlayerIndex = 0 //Max the number of selected players
     let currentThrowIndex = 0
     let currentThrows = []
-    let throws = {}
     
     let winningPlayer = null
     let show_WinnerScreenModal = currentGame.finished
@@ -101,6 +100,7 @@
                         //Show Finishing Screen
                         // winnerPlayerIndex = currentPlayerIndex
                         winningPlayer = currentPlayer
+                        currentGame.winner = winningPlayer
                         finishingScore = calcThrowsScore(currentThrows)
                         show_WinnerScreenModal = true
                         currentGame.finished = true
@@ -131,8 +131,8 @@
 
 
     async function commitThrows(){
-        const oldThrows = throws[currentRound]?? []
-        throws[currentRound] = [...oldThrows, currentThrows]
+        const oldThrows = currentGame.throws[currentRound]?? []
+        currentGame.throws[currentRound] = [...oldThrows, currentThrows]
         if(timervalue > 0){
             await startCountdown()
         }
@@ -255,8 +255,8 @@
                 currentPlayerIndex -= 1
                 currentPlayer = currentGame.players[currentPlayerIndex]
             }
-            currentThrows = throws[currentRound][currentPlayerIndex]
-            throws[currentRound].splice(currentPlayerIndex)
+            currentThrows = currentGame.throws[currentRound][currentPlayerIndex]
+            currentGame.throws[currentRound].splice(currentPlayerIndex)
         } else {
             currentThrowIndex -= 1
         }
@@ -282,7 +282,7 @@
         show_WinnerScreenModal = false;
         show_ConfirmSaveModal = false;
         const newID = GameAPI.generateNewGameID(100) 
-        GameAPI.createNewGame({...currentGame, id: newID, finished: false, winner: winningPlayer})
+        GameAPI.createNewGame({...currentGame, id: newID, finished: false,})
         window.location.href = `#/game/redirect/:${newID}`
     }
     
@@ -325,13 +325,13 @@
                                         <div class="">
                                             <!-- Last throws scores. the index is the current round -1, -2, and -3 -->
                                             {#if currentRound > 3}
-                                                <p class="text-base-200 text-xs">R{currentRound-3}: {calcThrowsScore(throws[currentRound-3][currentPlayerIndex])}</p>
+                                                <p class="text-base-200 text-xs">R{currentRound-3}: {calcThrowsScore(currentGame.throws[currentRound-3][currentPlayerIndex])}</p>
                                             {/if}
                                             {#if currentRound > 2}
-                                                <p class="text-base-200 text-xs">R{currentRound-2}: {calcThrowsScore(throws[currentRound-2][currentPlayerIndex])}</p>
+                                                <p class="text-base-200 text-xs">R{currentRound-2}: {calcThrowsScore(currentGame.throws[currentRound-2][currentPlayerIndex])}</p>
                                             {/if}
                                             {#if currentRound > 1}
-                                                <p class="text-base-200 text-xs">R{currentRound-1}: {calcThrowsScore(throws[currentRound-1][currentPlayerIndex])}</p>
+                                                <p class="text-base-200 text-xs">R{currentRound-1}: {calcThrowsScore(currentGame.throws[currentRound-1][currentPlayerIndex])}</p>
                                             {/if}
                                         </div>
                                     </div>

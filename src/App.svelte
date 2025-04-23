@@ -62,7 +62,18 @@
         </svg>
       </label>
     </div>
-    <a href="#/game/new" class="btn btn-ghost ml-auto h-full w-fit flex items-center pr-10">
+    <div class="mr-auto w-full h-full">
+      <!-- <img src="assrts/logo_2.png" alt="Logo"> -->
+       <!-- svelte-ignore a11y_consider_explicit_label -->
+       <a href="#/">
+         <div class="logo w-[80px] h-full bg-white/50"></div>
+       </a>
+    </div>
+    <div class="mr-10 flex gap-x-3">
+      <p class="my-auto text-primary">Storage:</p>
+      <div class="radial-progress text-primary text-xs w-14 h-14" style="--value:{storageUsage};" aria-valuenow="{storageUsage}" role="progressbar">{Math.floor(storageUsage * 100) / 100}%</div>
+    </div>
+    <a href="#/game/new" class="btn btn-ghost ml-auto h-full w-fit flex items-center pr-10" target="_blank">
       <p class="text-nowrap text-green-600">Start New Game</p>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-13 w-13 text-green-600" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
@@ -83,7 +94,7 @@
           <!-- Sidebar content here -->
           <li><a href="#/" class="link text-blue-500 text-3xl">Home</a></li>
           <li></li>
-          <li><a href="#/game/new" class="link text-blue-400 text-2xl">Start a New Game</a></li>
+          <li><a href="#/game/new" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li>
           <li><a href="#/profiles" class="link text-blue-400 text-2xl">Players</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl">Statistics</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl">Scoreboard</a></li>

@@ -17,6 +17,7 @@
         winner: undefined, //Only set at the end of the game
         id: GameAPI.generateNewGameID(100),
         score: {},
+        throws: {},
     }
 
     let newGame = defaultGame
