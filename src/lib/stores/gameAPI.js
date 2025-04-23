@@ -6,6 +6,8 @@
  *There are tqwo different kind of Games. Saved and current (ongoing) games.
  */
 
+ import {sha256} from 'js-sha256';
+
 
 class GameAPI {
 
@@ -64,6 +66,8 @@ class GameAPI {
     static deleteCurrentGame(gameID){
         try{
             localStorage.removeItem(`game_${gameID}`)
+            const newRunningGameList = this.getAllCurrentGameIDs().filter(id => id !== gameID);
+            localStorage.setItem('RunningGamesList', JSON.stringify(newRunningGameList))
             return true
         } catch (e) {
             console.log(e)
@@ -85,12 +89,28 @@ class GameAPI {
     }
 
     static saveCurrentGame(gameID, game){
-        if(game.finsihed){
+        if(game.finished){
             const currentSavedGames = this.getAllSavedGames()
             let newSavedGamesList = [...currentSavedGames, game]
             localStorage.setItem('FinishedGames', JSON.stringify(newSavedGamesList))
+            this.deleteCurrentGame(gameID)
         } else {
             localStorage.setItem(`game_${gameID}`, JSON.stringify(game))
+        }
+    }
+
+    static generateNewGameID(length = 8) {
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        result = sha256(result).slice(0, 32)
+        const burnedGameIDs = this.getAllCurrentGameIDs()
+        if(burnedGameIDs.includes(result)){
+            return this.generateNewGameID()
+        } else {
+            return result;
         }
     }
 

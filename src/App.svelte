@@ -16,6 +16,7 @@
   import NewGame from './routes/game/NewGame.svelte';
   import PlayGame from './routes/game/playGame.svelte';
   import AllProfiles from './routes/profiles/allProfiles.svelte';
+  import RedirectToNewGame from './routes/game/RedirectToNewGame.svelte';
   
   const routes = {
     '/': Home,
@@ -25,6 +26,7 @@
     '/game/play/:gameid': PlayGame,
     '/profiles': AllProfiles, //All Profiles Showing here
     '/profiles/:new': AllProfiles, //All Profiles Showing here
+    '/game/redirect/:new': RedirectToNewGame, //Needed for playing a new game from within a game
     // '/profiles/profile/:userid': ProfileInfo, //Showing the specific params of one user
 
     '*': NotFound, //Fallback/Error/404 Route

@@ -40,23 +40,6 @@
     function addPlayer(){
         // check inputs
         if(newPlayer_Name.replaceAll(' ', '').length >= 2){
-            // add player to players
-            // const id = Math.floor(Math.random() * 999999) + 5; 
-            // $userDB = [...$userDB, 
-            //     {
-            //         id:id, 
-            //         name: newPlayer_Name, 
-            //         abrv: newPlayer_Abrv,
-            //         isGuest: false,
-            //         wins: 0,
-            //         loss: 0,
-            //         avg: 0,
-            //         overall_points: 0,
-            //         highest_round: 0,
-            //         highest_finish: 0,
-            //         last_game: -1,
-            //     }
-            // ]
             userDB.addUser(newPlayer_Name, newPlayer_Abrv)
 
             // Closemodal
@@ -69,7 +52,6 @@
     }
 
     function removePlayer(){
-        // userDB.update(players => players.filter(player => player.id !== toBeRemovedPlayer.id))
         userDB.deleteUser(toBeRemovedPlayer.id)
         toBeRemovedPlayer = {}
         show_RemovePlayerModal = false
@@ -86,7 +68,6 @@
             <button class="btn btn-warning">TESt</button>
 
             {#each $userDB as player}
-            <!-- <button class="btn btn-info" on:click={()=>{userDB.updateUser(player.id, {name: 'TESTTEST'})}}>LOG</button> -->
             {#if !player.isGuest}
             <li class="list-row max-h-20 flex">
                 <div class="flex-none w-10 h-full flex select-none">
@@ -203,8 +184,6 @@
                         <p class="opacity-70">-No Abbrevation-</p>
                         {/if}
                     </label>
-                    <!-- <input type="text" class="input w-full" placeholder="Name" bind:value={newPlayer_Name} maxlength="32" minlength="2">
-                    <input type="text" class="input w-full" placeholder="Abbrevation (Optional)" bind:value={newPlayer_Abrv} maxlength="2" minlength="0"> -->
 
                 </div>
                 <div class="modal-action">

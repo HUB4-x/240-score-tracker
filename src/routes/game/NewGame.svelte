@@ -2,38 +2,38 @@
     import { onMount } from "svelte";
     import { EnterRules, GameModes, FinishingRule } from "../../lib/stores/gameSettings";
     import { userDB } from "../../lib/stores/userAPI";
-    import {sha256} from 'js-sha256';
     import GameAPI from "../../lib/stores/gameAPI";
     
     const defaultGame = {
+        dartBoard: '240',
         gameMode: '_301',
-        enterRule: 'STRAIGHT_IN',
-        finishRule: 'STRAIGHT_OUT',
+        enterRule: EnterRules.STRAIGHT_IN,
+        finishRule: FinishingRule.STRAIGHT_OUT,
         maxRounds: 0, //0 equals infinit rounds
         players: [], //The players that are playing the game. This array should be ordered by the playing order
         casual: false, //Wether or not it should count into the statistics
         rounds: 0, 
         finished: false,
         winner: undefined, //Only set at the end of the game
-        id: sha256(generateNewGameID(100)).slice(0,32),
+        id: GameAPI.generateNewGameID(100),
         score: {},
     }
 
     let newGame = defaultGame
 
-    function generateNewGameID(length = 8) {
-        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        const burnedGameIDs = GameAPI.getAllCurrentGameIDs()
-        if(burnedGameIDs.includes(result)){
-            return generateNewGameID()
-        } else {
-            return result;
-        }
-    }
+    // function generateNewGameID(length = 8) {
+    //     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    //     let result = '';
+    //     for (let i = 0; i < length; i++) {
+    //         result += chars.charAt(Math.floor(Math.random() * chars.length));
+    //     }
+    //     const burnedGameIDs = GameAPI.getAllCurrentGameIDs()
+    //     if(burnedGameIDs.includes(result)){
+    //         return generateNewGameID()
+    //     } else {
+    //         return result;
+    //     }
+    // }
 
     onMount(()=>{
         // currentGameSettings.update(state => {
@@ -204,7 +204,7 @@
             <div class="flex flex-col p-2">
                 <button class="text-xl mr-auto font-bold mb-1">Casual:</button>
                 <div class="ml-5">
-                    <p class="text-sm text-gray-200/70">Info: If you choose to play casual this game will not affect your statistics!</p>
+                    <p class="text-sm text-gray-200/70">Info: If you choose to play casual, this game will not affect your statistics!</p>
                     <input type="checkbox" aria-label="Casual" bind:checked={newGame.casual} class="btn btn-sm w-fit checked:btn-success">
                     <!-- <input type="checkbox" aria-label="Casual" bind:checked={$currentGameSettings.casual} class="btn btn-sm w-fit checked:btn-success"> -->
                 </div>

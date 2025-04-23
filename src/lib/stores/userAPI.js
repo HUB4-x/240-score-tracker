@@ -102,6 +102,7 @@ function createLocalStorageStore(key, initialValue) {
                 })
                 return tmp
             }
+            return null
         },
 
         addUser: (name, abrv, color) => {
@@ -121,11 +122,17 @@ function createLocalStorageStore(key, initialValue) {
                             wins: 0,
                             losses: 0,
                             games_played: 0,
-                            avg: 0,
+                            avgs: {
+                                overall: 0,
+                                _501: 0,
+                                _301: 0,
+                                _701: 0,
+                            },
                             overall_points: 0,
                             highest_round: 0,
                             highest_finish: 0,
                             last_game: null,
+
                         }
                     ]
                 })
