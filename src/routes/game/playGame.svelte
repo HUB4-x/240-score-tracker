@@ -11,6 +11,7 @@
     let currentGame = GameAPI.getCurrentGame(''+gameId)
     if(!currentGame){
         window.location.href = '#/noSuchGame'
+        window.location.reload()
     }
     const numberOfPlayers = currentGame.players.length
     const startingScore = currentGame.gameMode === '_501'? 501 : currentGame.gameMode === '_301'? 301 : 701
