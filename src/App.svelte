@@ -1,39 +1,16 @@
 <script lang="ts">
-  import { drawerOpen } from './lib/stores/globals';
-
-
-  /**
-   * ##################################################################################
-   * ##############################  Routing  #########################################
-   * ##################################################################################
-  */
   import Router from 'svelte-spa-router'; //Improt SPA Router
-  import Home from './routes/Home.svelte'; //Route to Landing Page
-  import NotFound from './routes/404.svelte'; //Route to Error Page
-
-  const routes = {
-    '/': Home,
-    '*': NotFound, //Fallback/Error/404 Route
-  };
-
-
-  // const routes = {
-  //   '/': Home,
-  //   '/testing/settingtesting': SettingTesting,
-  //   '/testing/profiles': PlayerTesting,
-  //   '/game/new': NewGame,
-  //   '/game/play/:gameid': PlayGame,
-  //   '/profiles': AllProfiles, //All Profiles Showing here
-  //   '/profiles/:new': AllProfiles, //All Profiles Showing here
-  //   '/game/redirect/:new': RedirectToNewGame, //Needed for playing a new game from within a game
-  //   // '/profiles/profile/:userid': ProfileInfo, //Showing the specific params of one user
-
-  //   // '*': NotFound, //Fallback/Error/404 Route
-  // };
-
-
+  import { drawerOpen } from './lib/stores/globals';
+  import { onMount } from 'svelte';
+  import { routes } from './lib/configs/routing_config'
 
   let storageUsage = 0
+
+
+  onMount(()=>{
+    getLocalStorageSize()
+    // console.log('LocalStorage used:', getLocalStorageSize(), ' of 5000 KB -', storageUsage, '%');
+  })
 
   function getLocalStorageSize() {
         // Max storage size is (for most browsers 5000kb)
@@ -48,7 +25,6 @@
         return (total * 2 / 1024).toFixed(2) + ' KB';
   }
 
-  console.log('LocalStorage used:', getLocalStorageSize(), ' of 5000 KB -', storageUsage, '%');
 
 </script>
 
@@ -82,12 +58,12 @@
     </a>
   </nav>
 
-    <div class="drawer w-full h-full">
+    <div class="drawer w-full h-full overflow-hidden">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
-      <div class="drawer-content flex h-screen w-screen">
-        <!-- Page content here -->
-        <Router {routes} />
-        <!-- <label for="my-drawer" class="btn btn-base-200 drawer-button">Open</label> -->
+      <div class="drawer-content flex overflow-hidden">
+          <!-- Page content here -->
+          <Router {routes} />
+          <!-- <label for="my-drawer" class="btn btn-base-200 drawer-button">Open</label> -->
       </div>
       <div class="drawer-side">
         <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -105,8 +81,8 @@
           <li></li>
           <li>Testing</li>
           <li></li>
-          <li><a href="#/testing/settingtesting" class="link text-blue-400 text-2xl">Settings</a></li>
-          <li><a href="#/testing/profiles" class="link text-blue-400 text-2xl">Profiles</a></li>
+          <li><a href="#/testing/settingtesting" class="link text-blue-400 text-2xl opacity-50">Settings</a></li>
+          <li><a href="#/testing/profiles" class="link text-blue-400 text-2xl opacity-50">Profiles</a></li>
         </ul>
       </div>
     </div>
