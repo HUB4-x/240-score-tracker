@@ -1,16 +1,12 @@
 <script>
-    import { settings } from '../lib/stores/settings';
-    import { userDB } from '../lib/stores/userAPI';
-    import LastGamesComponent from './homeComponents/LastGamesComponent.svelte';
-    // Import History
-    // Import Scoreboard
+    // import LastGamesComponent from './homeComponents/LastGamesComponent.svelte';
 </script>
 
 <div class="h-full w-full grid grid-cols-10 grid-rows-10">
     <div class="row-span-10 col-span-6 grid grid-cols-1 grid-rows-2">
         <div class="h-full w-full flex flex-col p-8">
             <h1 class="text-2xl front-bold underline mb-2">Last Game</h1>
-            <LastGamesComponent></LastGamesComponent>
+            <!-- <LastGamesComponent></LastGamesComponent> -->
         </div>
 
         <div class="flex flex-col p-8 border-t-2 border-white">

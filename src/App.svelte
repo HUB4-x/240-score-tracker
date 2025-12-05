@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { drawerOpen } from './lib/stores/globals';
 
 
@@ -11,26 +11,27 @@
   import Home from './routes/Home.svelte'; //Route to Landing Page
   import NotFound from './routes/404.svelte'; //Route to Error Page
 
-  import SettingTesting from './routes/testing/settingTesting.svelte'
-  import PlayerTesting from './routes/testing/testingProfiles.svelte'
-  import NewGame from './routes/game/NewGame.svelte';
-  import PlayGame from './routes/game/playGame.svelte';
-  import AllProfiles from './routes/profiles/allProfiles.svelte';
-  import RedirectToNewGame from './routes/game/RedirectToNewGame.svelte';
-  
   const routes = {
     '/': Home,
-    '/testing/settingtesting': SettingTesting,
-    '/testing/profiles': PlayerTesting,
-    '/game/new': NewGame,
-    '/game/play/:gameid': PlayGame,
-    '/profiles': AllProfiles, //All Profiles Showing here
-    '/profiles/:new': AllProfiles, //All Profiles Showing here
-    '/game/redirect/:new': RedirectToNewGame, //Needed for playing a new game from within a game
-    // '/profiles/profile/:userid': ProfileInfo, //Showing the specific params of one user
-
     '*': NotFound, //Fallback/Error/404 Route
   };
+
+
+  // const routes = {
+  //   '/': Home,
+  //   '/testing/settingtesting': SettingTesting,
+  //   '/testing/profiles': PlayerTesting,
+  //   '/game/new': NewGame,
+  //   '/game/play/:gameid': PlayGame,
+  //   '/profiles': AllProfiles, //All Profiles Showing here
+  //   '/profiles/:new': AllProfiles, //All Profiles Showing here
+  //   '/game/redirect/:new': RedirectToNewGame, //Needed for playing a new game from within a game
+  //   // '/profiles/profile/:userid': ProfileInfo, //Showing the specific params of one user
+
+  //   // '*': NotFound, //Fallback/Error/404 Route
+  // };
+
+
 
   let storageUsage = 0
 
@@ -94,12 +95,13 @@
           <!-- Sidebar content here -->
           <li><a href="#/" class="link text-blue-500 text-3xl">Home</a></li>
           <li></li>
-          <li><a href="#/game/new" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li>
+          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50" target="_blank">Start a New Game</a></li>
+          <!-- <li><a href="#/game/new" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li> -->
           <li><a href="#/profiles" class="link text-blue-400 text-2xl">Players</a></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl">Statistics</a></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl">Scoreboard</a></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl">History</a></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl">About this Game</a></li>
+          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Statistics</a></li>
+          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Scoreboard</a></li>
+          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">History</a></li>
+          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">About this Game</a></li>
           <li></li>
           <li>Testing</li>
           <li></li>
