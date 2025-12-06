@@ -9,7 +9,7 @@ import { STORAGE_KEYS } from "../configs/storage_configs";
  * ########################## MODEL #####################################
  * ######################################################################
  */
-export type Stats = {
+export type PlayerStats = {
     wins?: number,
     losses?: number,
     totalPoints?: number,
@@ -25,7 +25,7 @@ export interface Player {
     id: number
     name: string,
     nickname?: string
-    stats?: Stats,
+    stats?: PlayerStats,
     isFavorite?: boolean,
     playersColor_hex?: string,
 } 
