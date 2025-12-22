@@ -6,9 +6,10 @@
 - [x] Player API 
     - [x] store, load, change players
 - [x] Player view (anbindung zur API)
-- Game API
-    - Store, load, change Games
+- [x] Game API
+    - [x] Store, load, change Games
 - Game overview (history?) (Anbindung zur API)
+    - Better UI!!! (one whole list and filter options)
 - Game 
     - Erstellen 
     - Spielen / Spiel-Logik

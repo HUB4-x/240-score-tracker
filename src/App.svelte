@@ -2,7 +2,7 @@
   import Router from 'svelte-spa-router'; //Improt SPA Router
   import { drawerOpen } from './lib/stores/globals';
   import { onMount } from 'svelte';
-  import { routes } from './lib/configs/routing_config'
+  import { route_links, routes } from './lib/configs/routing_config'
 
   let storageUsage = 0
 
@@ -60,7 +60,7 @@
 
     <div class="drawer w-full h-full overflow-hidden">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
-      <div class="drawer-content flex overflow-hidden">
+      <div class="drawer-content h-full w-full flex overflow-hidden">
           <!-- Page content here -->
           <Router {routes} />
           <!-- <label for="my-drawer" class="btn btn-base-200 drawer-button">Open</label> -->
@@ -69,11 +69,12 @@
         <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
         <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
           <!-- Sidebar content here -->
-          <li><a href="#/" class="link text-blue-500 text-3xl">Home</a></li>
+          <li><a href="{route_links.home}" class="link text-blue-500 text-3xl">Home</a></li>
           <li></li>
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50" target="_blank">Start a New Game</a></li>
           <!-- <li><a href="#/game/new" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li> -->
-          <li><a href="#/profiles" class="link text-blue-400 text-2xl">Players</a></li>
+          <li><a href="{route_links.playerlist}" class="link text-blue-400 text-2xl">Players</a></li>
+          <li><a href="{route_links.gamelist}" class="link text-blue-400 text-2xl">List of Games</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Statistics</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Scoreboard</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">History</a></li>

@@ -34,9 +34,9 @@ export enum Enter_Rule {
 
 
 export type Game_Settings = {
-    maxRounds: number,
+    maxRounds?: number,
     dartboard: Dartboard,
-    casual: boolean,
+    casual?: boolean,
     enter_rule: Enter_Rule,
     finish_rule: Finish_Rule,
 
@@ -59,7 +59,7 @@ export interface Game {
     name?: string,
     timestamp?: string,
     playerIDs_in_game: number[],
-    players_in_game?: Player[],
+    // players_in_game?: Player[],
     finished: boolean, //false ==> ongoing game
     winner?: Player,
     currentRound?: number,

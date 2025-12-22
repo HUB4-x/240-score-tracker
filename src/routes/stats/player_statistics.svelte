@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { params } from 'svelte-spa-router';
-    import { getPlayerById, type Player } from "../../../lib/api/player_API";
-    import { goto } from "../../../lib/utils";
+    import { getPlayerById, type Player } from "../../lib/api/player_API";
+    import { goto } from "../../lib/utils";
 
     let playerID: number | null = $state(null)
     let player: Player | null = $state(null)
