@@ -84,6 +84,18 @@
         enterRule = default_enterRule
         finishRule = default_finishRule
     }
+
+    function check_rules_to_dartboard(db, er, fr){
+        if(db === Dartboard.GAME_180){
+            if(er === Enter_Rule.ENTER_TRIPPLE_IN) enterRule = Enter_Rule.ENTER_STRAIGHT_IN
+            if(fr === Finish_Rule.FIN_TRIPPLE_OUT) finishRule = Finish_Rule.FIN_STRAIGHT_OUT
+        }
+    }
+
+    $effect(()=>{
+        check_rules_to_dartboard(dartboard, enterRule, finishRule)
+    })
+
 </script>
 
 <div class="w-1/2 min-h-max h-5/6 m-auto p-4 flex gap-x-5">
@@ -166,11 +178,13 @@
                 <select class="select" bind:value={enterRule}>
                     {#each Object.values(Enter_Rule) as eRule, index}
                         {#if index <= (Object.values(Enter_Rule).length -1)/2}
+                        {#if dartboard === 240 || Enter_Rule[eRule] !== Enter_Rule.ENTER_TRIPPLE_IN}
                             {#if Enter_Rule[eRule] === enterRule}
                                 <option class="bg-info" value="{Enter_Rule[eRule]}">{eRule}</option>
                             {:else}
                                 <option value="{Enter_Rule[eRule]}">{eRule}</option>
                             {/if}
+                        {/if}
                         {/if}
                     {/each}
                 </select>
@@ -187,10 +201,12 @@
                 <select class="select" bind:value={finishRule}>
                     {#each Object.values(Finish_Rule) as fRule, index}
                         {#if index <= (Object.values(Finish_Rule).length -1)/2}
+                            {#if dartboard === 240 || Finish_Rule[fRule] !== Finish_Rule.FIN_TRIPPLE_OUT}
                             {#if Finish_Rule[fRule] === finishRule}
                                 <option class="bg-info" value="{Finish_Rule[fRule]}">{fRule}</option>
                             {:else}
                                 <option value="{Finish_Rule[fRule]}">{fRule}</option>
+                            {/if}
                             {/if}
                         {/if}
                     {/each}
