@@ -78,7 +78,7 @@
                         {@const is_game_valid = filter(game)}
                         {#if is_game_valid && ((game_searchstring !== '' && game.name.includes(game_searchstring)) || game_searchstring === '')}
                             <div class="flex w-75 h-40">
-                                <GameListElementComponent bind:game={games[index]}></GameListElementComponent>                    
+                                <GameListElementComponent gameID={game.id}></GameListElementComponent>                    
                             </div>
                         {/if}
                     {/each}

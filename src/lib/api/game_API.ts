@@ -64,7 +64,7 @@ export interface Game {
     winner?: Player,
     currentRound?: number,
     rounds?: Round[], // []
-    player_scores?: PlayerScores,
+    player_scores?: PlayerScores[],
 
 
     game_settings: Game_Settings,

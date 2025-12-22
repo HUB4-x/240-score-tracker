@@ -72,7 +72,8 @@
                         {#each games as game, index}
                             {#if game.finished}
                                 <div class="flex w-75 h-40">
-                                    <GameListElementComponent bind:game={games[index]}></GameListElementComponent>                    
+                                    <!-- <GameListElementComponent bind:game={games[index]}></GameListElementComponent>                     -->
+                                    <GameListElementComponent gameID={game.id}></GameListElementComponent>                    
                                 </div>
                             {/if}
                         {/each}
@@ -106,7 +107,7 @@
                                 <p>{game.name}</p>
                             </div> -->
                             <div class="flex w-70 h-40">
-                                <GameListElementComponent bind:game={games[index]}></GameListElementComponent>
+                                <GameListElementComponent gameID={game.id}></GameListElementComponent>
                             </div>
                             {/if}
                         {/each}

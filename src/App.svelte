@@ -50,7 +50,7 @@
       <p class="my-auto text-primary">Storage:</p>
       <div class="radial-progress text-primary text-xs w-14 h-14" style="--value:{storageUsage};" aria-valuenow="{storageUsage}" role="progressbar">{Math.floor(storageUsage * 100) / 100}%</div>
     </div>
-    <a href="#/game/new" class="btn btn-ghost ml-auto h-full w-fit flex items-center pr-10" target="_blank">
+    <a href="{route_links.create_game}" class="btn btn-ghost ml-auto h-full w-fit flex items-center pr-10" target="_blank">
       <p class="text-nowrap text-green-600">Start New Game</p>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-13 w-13 text-green-600" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
@@ -71,10 +71,11 @@
           <!-- Sidebar content here -->
           <li><a href="{route_links.home}" class="link text-blue-500 text-3xl">Home</a></li>
           <li></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50" target="_blank">Start a New Game</a></li>
+          <li><a href="{route_links.create_game}" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li>
           <!-- <li><a href="#/game/new" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li> -->
           <li><a href="{route_links.playerlist}" class="link text-blue-400 text-2xl">Players</a></li>
           <li><a href="{route_links.gamelist}" class="link text-blue-400 text-2xl">List of Games</a></li>
+
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Statistics</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Scoreboard</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">History</a></li>
