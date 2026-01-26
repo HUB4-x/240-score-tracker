@@ -16,6 +16,12 @@ export enum Dartboard {
     GAME_240 = 240,
 }
 
+export enum Gamemode {
+  X01_501 = 501,
+  X01_301 = 301,
+  X01_Man = 1001,
+}
+
 export enum Finish_Rule {
     FIN_STRAIGHT_OUT,
     FIN_DOUBLE_OUT,
@@ -33,13 +39,14 @@ export enum Enter_Rule {
 }
 
 
+
 export type Game_Settings = {
     maxRounds?: number,
     dartboard: Dartboard,
     casual?: boolean,
     enter_rule: Enter_Rule,
     finish_rule: Finish_Rule,
-
+    gamemode: number | 501 | 301,
 }
 
 export type Round = {

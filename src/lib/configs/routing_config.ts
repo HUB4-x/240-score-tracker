@@ -8,8 +8,8 @@ import NotFound from '../../routes/error/404.svelte'; //Route to Error Page
 import GameList from '../../routes/game/game_list.svelte';
 import PlayerList from '../../routes/player/player_list.svelte';
 import PlayerStatistics from '../../routes/stats/player_statistics.svelte';
-import CreatingGame from '../../routes/game/play_game/creating_game.svelte'
-
+import CreatingGame from '../../routes/game/creat_a_game/creating_game.svelte'
+import PlayGame from '../../routes/game/play_a_game/play_game.svelte';
 
 export const routes = {
     '/': Home,
@@ -18,6 +18,7 @@ export const routes = {
 
     '/games': GameList,
     '/games/new': CreatingGame,
+    '/games/play/:gid': PlayGame,
 
     '*': NotFound, //Fallback/Error/404 Route
 };
@@ -29,7 +30,8 @@ export const route_links = {
     statistics: '#/profiles/:pid/statistics',
 
     gamelist: '#/games',
-    create_game: '#/games/new'
+    create_game: '#/games/new',
+    playing_a_game: '#/games/play/:gid',
 }
 
 

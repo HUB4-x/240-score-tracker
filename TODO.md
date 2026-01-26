@@ -8,10 +8,10 @@
 - [x] Player view (anbindung zur API)
 - [x] Game API
     - [x] Store, load, change Games
-- Game overview (history?) (Anbindung zur API)
-    - Better UI!!! (one whole list and filter options)
+- [x] Game overview (history?) (Anbindung zur API)
+    - [x] Better UI!!! (one whole list and filter options)
 - Game 
-    - Erstellen 
+    - [x] Erstellen 
     - Spielen / Spiel-Logik
 - Statistic View
 
