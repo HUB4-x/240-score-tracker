@@ -19,6 +19,10 @@
         loadGames();
     });
 
+    function refresh(){
+        games = []
+        games = getGames()
+    }
 
     function genGame(n: number = 10){
         for(let i = 0; i < n; i++){
@@ -37,6 +41,8 @@
 
 </script>
 
+{#key games}
+<!-- <button on:click={()=>{genGame()}}>gen</button> -->
 <div class="w-full h-full max-h-full flex flex-col mx-auto p-5 px-20 space-y-4 overflow-hidden">
     <!-- <div class="flex h-fit mr-auto items-center gap-x-5 mb-10">
         <h1 class="text-2xl font-bold">Games</h1>
@@ -70,21 +76,22 @@
             <span>Currenlty no saved games.</span>
         </div>
     {:else}
-        <div class="flex flex-col size-full max-h-full overflow-hidden">
+        <div class="flex flex-col w-fit h-full max-h-full overflow-hidden">
             <!-- svelte-ignore event_directive_deprecated -->
-            <div class="flex flex-col w-full h-fit max-h-full border border-1 p-5 rounded rounded-lg gap-y-3">
-                <div class="flex flex-wrap w-full h-full gap-4 overflow-y-auto">
+            <!-- <div class="flex flex-col w-fit h-fit max-h-full border border-1 p-5 rounded rounded-lg"> -->
+                <div class="flex flex-wrap w-fit h-full gap-4 overflow-y-auto">
                     {#each games as game, index}
                         {@const is_game_valid = filter(game)}
                         {#if is_game_valid && ((game_searchstring !== '' && game.name.includes(game_searchstring)) || game_searchstring === '')}
                             <div class="flex w-75 h-40">
-                                <GameListElementComponent gameID={game.id}></GameListElementComponent>                    
+                                <GameListElementComponent gameID={game.id} refreshFCT={refresh}></GameListElementComponent>                    
                             </div>
                         {/if}
                     {/each}
                 </div>
-            </div>
+            <!-- </div> -->
 
         </div>
     {/if}
 </div>
+{/key}
