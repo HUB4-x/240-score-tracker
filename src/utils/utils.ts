@@ -1,4 +1,4 @@
-import { Theme, current_theme, themes } from "../stores/UI_Values";
+import { type Theme, current_theme, themes } from "../lib/stores/UI_Values";
 
 export function getLocalStorageSize(): [string, number] {
     // Max storage size is (for most browsers 5000kb)

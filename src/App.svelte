@@ -1,101 +1,173 @@
+<!-- src/routes/+page.svelte -->
 <script lang="ts">
-  import Router from 'svelte-spa-router'; //Improt SPA Router
-  import { onMount } from 'svelte';
-
-  let storageUsage = 0
-
-
-  onMount(()=>{
-    getLocalStorageSize()
-    // console.log('LocalStorage used:', getLocalStorageSize(), ' of 5000 KB -', storageUsage, '%');
-  })
-
-  function getLocalStorageSize() {
-      // Max storage size is (for most browsers 5000kb)
-      let total = 0;
-      for (let key in localStorage) {
-          if (!localStorage.hasOwnProperty(key)) continue;
-          const value = localStorage.getItem(key);
-          if(value){
-            total += key.length + value.length;
-          }
-      }
-      storageUsage = ((total * 2 / 1024)/5000)*100
-      // Each character ≈ 2 bytes
-      return (total * 2 / 1024).toFixed(2) + ' KB';
-  }
-
-
+  import { toggleTheme } from "$lib/stores/theme.store";
 </script>
 
-
-<div class="w-screen h-screen min-w-96 min-h-96 bg-sky-950 flex flex-col overflow-hidden">
+<div class="min-h-screen bg-base-100 text-base-content">
   <!-- Navbar -->
-  <nav class="bg-base-200 flex h-16">
-    <div class="h-full w-full max-w-20">
-      <label for="my-drawer" class="btn btn-block h-full btn-ghost drawer-button">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </label>
+  <nav class="navbar border-b border-base-300 bg-base-200/80 backdrop-blur">
+    <div class="navbar-start">
+      <a class="text-xl font-bold text-primary">240 Darts</a>
     </div>
-    <div class="mr-auto w-full h-full">
-      <!-- <img src="assrts/logo_2.png" alt="Logo"> -->
-       <!-- svelte-ignore a11y_consider_explicit_label -->
-       <a href="#/">
-         <div class="logo w-[80px] h-full bg-white/50"></div>
-       </a>
+
+    <div class="navbar-end gap-2">
+      <button class="btn btn-ghost">Stats</button>
+      <button class="btn btn-ghost">Players</button>
+      <button class="btn btn-primary" on:click={toggleTheme}>
+        Theme
+      </button>
     </div>
-    <div class="mr-10 flex gap-x-3">
-      <p class="my-auto text-primary">Storage:</p>
-      <div class="radial-progress text-primary text-xs w-14 h-14" style="--value:{storageUsage};" aria-valuenow="{storageUsage}" role="progressbar">{Math.floor(storageUsage * 100) / 100}%</div>
-    </div>
-    <a href="/" class="btn btn-ghost ml-auto h-full w-fit flex items-center pr-10" target="_blank">
-      <p class="text-nowrap text-green-600">Start New Game</p>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-13 w-13 text-green-600" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-      </svg>
-    </a>
   </nav>
 
-    <div class="drawer w-full h-full overflow-hidden">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
-      <div class="drawer-content h-full w-full flex overflow-hidden">
-          <!-- Page content here -->
-          <!-- <Router {routes} /> -->
-          <!-- <label for="my-drawer" class="btn btn-base-200 drawer-button">Open</label> -->
-      </div>
-      <div class="drawer-side">
-        <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-        <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-          <!-- Sidebar content here -->
-          <li><a href="/routes/home" class="link text-blue-500 text-3xl">Home</a></li>
-          <li></li>
-          <li><a href="" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li>
-          <!-- <li><a href="#/game/new" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li> -->
-          <li><a href="/" class="link text-blue-400 text-2xl">Players</a></li>
-          <li><a href="/" class="link text-blue-400 text-2xl">List of Games</a></li>
+  <main class="mx-auto max-w-7xl px-4 py-8">
+    <!-- Hero -->
+    <section class="hero min-h-[360px] rounded-3xl bg-base-200 shadow-xl">
+      <div class="hero-content grid w-full gap-10 lg:grid-cols-2">
+        <div>
+          <div class="badge badge-success mb-4">Offline First</div>
 
-          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Statistics</a></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Scoreboard</a></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">History</a></li>
-          <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">About this Game</a></li>
-          <li></li>
-          <li>Testing</li>
-          <li></li>
-          <li><a href="#/testing/settingtesting" class="link text-blue-400 text-2xl opacity-50">Settings</a></li>
-          <li><a href="#/testing/profiles" class="link text-blue-400 text-2xl opacity-50">Profiles</a></li>
-        </ul>
-      </div>
-    </div>
-  
+          <h1 class="text-5xl font-black leading-tight">
+            Score darts faster.
+            <span class="text-primary">Play smarter.</span>
+          </h1>
 
-  <!-- When using a route use # for GitHub Pages -->
-  <!-- <a href="/">Home</a> -->
-  
-  <!-- This is like a slot. Thats where the routes are rendered. The first in the routes constant is the default -->
+          <p class="mt-4 max-w-xl text-base-content/70">
+            Local-first dart scoring with custom game modes, saved matches,
+            player statistics and match history.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-3">
+            <button class="btn btn-primary btn-lg">Start New Game</button>
+            <button class="btn btn-outline btn-lg">Continue Game</button>
+          </div>
+        </div>
+
+        <div class="rounded-3xl border border-base-300 bg-base-100 p-6">
+          <div class="stats stats-vertical w-full shadow lg:stats-horizontal">
+            <div class="stat">
+              <div class="stat-title">Games</div>
+              <div class="stat-value text-primary">128</div>
+              <div class="stat-desc">Total played</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-title">Checkout</div>
+              <div class="stat-value text-secondary">170</div>
+              <div class="stat-desc">Highest</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <button class="card bg-base-200 shadow-xl transition hover:-translate-y-1">
+        <div class="card-body">
+          <h2 class="card-title">🎯 New Game</h2>
+          <p class="text-base-content/60">Start 501, 301 or custom mode.</p>
+        </div>
+      </button>
+
+      <button class="card bg-base-200 shadow-xl transition hover:-translate-y-1">
+        <div class="card-body">
+          <h2 class="card-title">▶ Continue</h2>
+          <p class="text-base-content/60">Resume your saved match.</p>
+        </div>
+      </button>
+
+      <button class="card bg-base-200 shadow-xl transition hover:-translate-y-1">
+        <div class="card-body">
+          <h2 class="card-title">👥 Players</h2>
+          <p class="text-base-content/60">Manage local player profiles.</p>
+        </div>
+      </button>
+
+      <button class="card bg-base-200 shadow-xl transition hover:-translate-y-1">
+        <div class="card-body">
+          <h2 class="card-title">📊 Statistics</h2>
+          <p class="text-base-content/60">View averages and history.</p>
+        </div>
+      </button>
+    </section>
+
+    <!-- Main Grid -->
+    <section class="mt-8 grid gap-6 lg:grid-cols-3">
+      <!-- Resume Game -->
+      <div class="card border border-primary/30 bg-base-200 shadow-xl lg:col-span-2">
+        <div class="card-body">
+          <div class="flex items-center justify-between">
+            <h2 class="card-title">Current Game</h2>
+            <div class="badge badge-primary">501 Double Out</div>
+          </div>
+
+          <div class="mt-6 grid gap-4 md:grid-cols-2">
+            <div class="rounded-2xl bg-base-100 p-5">
+              <p class="text-sm text-base-content/60">Player 1</p>
+              <p class="text-4xl font-black text-primary">240</p>
+            </div>
+
+            <div class="rounded-2xl bg-base-100 p-5">
+              <p class="text-sm text-base-content/60">Player 2</p>
+              <p class="text-4xl font-black text-secondary">180</p>
+            </div>
+          </div>
+
+          <div class="card-actions mt-4 justify-end">
+            <button class="btn btn-primary">Resume Match</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Player Box -->
+      <div class="card bg-base-200 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">Top Player</h2>
+
+          <div class="mt-4 rounded-2xl bg-base-100 p-5">
+            <p class="text-lg font-bold">Alex</p>
+            <p class="text-base-content/60">Win rate 62%</p>
+          </div>
+
+          <progress class="progress progress-success mt-4" value="62" max="100" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Grid -->
+    <section class="mt-8 grid gap-6 lg:grid-cols-2">
+      <!-- Favorite Modes -->
+      <div class="card bg-base-200 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">Favorite Modes</h2>
+
+          <div class="mt-4 flex flex-wrap gap-3">
+            <button class="btn btn-outline btn-primary">501 Double Out</button>
+            <button class="btn btn-outline btn-primary">301 Single Out</button>
+            <button class="btn btn-outline btn-primary">180 Board</button>
+            <button class="btn btn-outline btn-primary">Custom</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Games -->
+      <div class="card bg-base-200 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">Recent Games</h2>
+
+          <div class="space-y-3">
+            <div class="rounded-2xl bg-base-100 p-4">
+              <p class="font-bold">501 Double Out</p>
+              <p class="text-sm text-base-content/60">Winner: Alex</p>
+            </div>
+
+            <div class="rounded-2xl bg-base-100 p-4">
+              <p class="font-bold">301 Single Out</p>
+              <p class="text-sm text-base-content/60">Winner: John</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
-
-
-
-

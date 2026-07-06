@@ -1,6 +1,6 @@
 // src/lib/stores/theme.store.ts
 import { writable } from "svelte/store";
-import { getInitialTheme, getLocalStorageSize } from "../utils/utils";
+import { getInitialTheme, getLocalStorageSize } from "../../../utils/utils";
 
 export const themes = {
   dark: "240dark",
