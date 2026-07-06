@@ -1,8 +1,6 @@
 <script lang="ts">
   import Router from 'svelte-spa-router'; //Improt SPA Router
-  import { drawerOpen } from './lib/stores/globals';
   import { onMount } from 'svelte';
-  import { route_links, routes } from './lib/configs/routing_config'
 
   let storageUsage = 0
 
@@ -13,16 +11,18 @@
   })
 
   function getLocalStorageSize() {
-        // Max storage size is (for most browsers 5000kb)
-        let total = 0;
-        for (let key in localStorage) {
-            if (!localStorage.hasOwnProperty(key)) continue;
-            const value = localStorage.getItem(key);
+      // Max storage size is (for most browsers 5000kb)
+      let total = 0;
+      for (let key in localStorage) {
+          if (!localStorage.hasOwnProperty(key)) continue;
+          const value = localStorage.getItem(key);
+          if(value){
             total += key.length + value.length;
-        }
-        storageUsage = ((total * 2 / 1024)/5000)*100
-        // Each character ≈ 2 bytes
-        return (total * 2 / 1024).toFixed(2) + ' KB';
+          }
+      }
+      storageUsage = ((total * 2 / 1024)/5000)*100
+      // Each character ≈ 2 bytes
+      return (total * 2 / 1024).toFixed(2) + ' KB';
   }
 
 
@@ -50,7 +50,7 @@
       <p class="my-auto text-primary">Storage:</p>
       <div class="radial-progress text-primary text-xs w-14 h-14" style="--value:{storageUsage};" aria-valuenow="{storageUsage}" role="progressbar">{Math.floor(storageUsage * 100) / 100}%</div>
     </div>
-    <a href="{route_links.create_game}" class="btn btn-ghost ml-auto h-full w-fit flex items-center pr-10" target="_blank">
+    <a href="/" class="btn btn-ghost ml-auto h-full w-fit flex items-center pr-10" target="_blank">
       <p class="text-nowrap text-green-600">Start New Game</p>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-13 w-13 text-green-600" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
@@ -59,22 +59,22 @@
   </nav>
 
     <div class="drawer w-full h-full overflow-hidden">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
+      <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
       <div class="drawer-content h-full w-full flex overflow-hidden">
           <!-- Page content here -->
-          <Router {routes} />
+          <!-- <Router {routes} /> -->
           <!-- <label for="my-drawer" class="btn btn-base-200 drawer-button">Open</label> -->
       </div>
       <div class="drawer-side">
         <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
         <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
           <!-- Sidebar content here -->
-          <li><a href="{route_links.home}" class="link text-blue-500 text-3xl">Home</a></li>
+          <li><a href="/routes/home" class="link text-blue-500 text-3xl">Home</a></li>
           <li></li>
-          <li><a href="{route_links.create_game}" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li>
+          <li><a href="" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li>
           <!-- <li><a href="#/game/new" class="link text-blue-400 text-2xl" target="_blank">Start a New Game</a></li> -->
-          <li><a href="{route_links.playerlist}" class="link text-blue-400 text-2xl">Players</a></li>
-          <li><a href="{route_links.gamelist}" class="link text-blue-400 text-2xl">List of Games</a></li>
+          <li><a href="/" class="link text-blue-400 text-2xl">Players</a></li>
+          <li><a href="/" class="link text-blue-400 text-2xl">List of Games</a></li>
 
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Statistics</a></li>
           <li><a href="#/" class="link text-blue-400 text-2xl opacity-50">Scoreboard</a></li>
