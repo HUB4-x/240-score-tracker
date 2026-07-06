@@ -1,0 +1,1 @@
+export const THEME_LOCALSTORAGE_KEY: string = '240_dart_theme'

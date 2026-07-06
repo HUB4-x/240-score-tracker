@@ -1,88 +1,62 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: dart-dark --default, dart-light;
+}
+
+@plugin "daisyui/theme" {
+  name: "dart_240_dark";
+  default: true;
+  color-scheme: dark;
+
+  --color-base-100: #050a0d;
+  --color-base-200: #0a1117;
+  --color-base-300: #111c24;
+  --color-base-content: #f8fafc;
+
+  --color-primary: #4daa32;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #c62828;
+  --color-secondary-content: #ffffff;
+
+  --color-success: #4daa32;
+  --color-success-content: #ffffff;
+
+  --color-error: #c62828;
+  --color-error-content: #ffffff;
+
+  --color-info: #3b82f6;
+  --color-warning: #f59e0b;
+}
+
+@plugin "daisyui/theme" {
+  name: "dart_240_light";
+  color-scheme: light;
+
+  --color-base-100: #f8fafc;
+  --color-base-200: #e5e7eb;
+  --color-base-300: #cbd5e1;
+  --color-base-content: #111827;
+
+  --color-primary: #3f8f29;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #b91c1c;
+  --color-secondary-content: #ffffff;
+
+  --color-success: #3f8f29;
+  --color-success-content: #ffffff;
+
+  --color-error: #b91c1c;
+  --color-error-content: #ffffff;
+
+  --color-info: #2563eb;
+  --color-warning: #d97706;
+}
 
 .logo {
-  background-image: url('assets/logo_3.png');
+  background-image: url("/assets/logo_3.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
-
-/* :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-.card {
-  padding: 2em;
-}
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */

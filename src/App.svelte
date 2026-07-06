@@ -1,6 +1,11 @@
 <!-- src/routes/+page.svelte -->
 <script lang="ts">
-  import { toggleTheme } from "$lib/stores/theme.store";
+  import { onMount } from "svelte";
+  import { getInitialTheme, initTheme, toggleTheme } from "../src/lib/utils/utils";
+
+  onMount(()=>{
+    initTheme()
+  })
 </script>
 
 <div class="min-h-screen bg-base-100 text-base-content">

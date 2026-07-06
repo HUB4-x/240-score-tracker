@@ -1,10 +1,10 @@
 // src/lib/stores/theme.store.ts
 import { writable } from "svelte/store";
-import { getInitialTheme, getLocalStorageSize } from "../../../utils/utils";
+import { getInitialTheme, getLocalStorageSize } from "../utils/utils";
 
 export const themes = {
-  dark: "240dark",
-  light: "240light",
+  dark: "dart_240_dark",
+  light: "dart_240_light",
 } as const;
 
 export type Theme = (typeof themes)[keyof typeof themes];
