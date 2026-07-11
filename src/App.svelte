@@ -4,10 +4,11 @@
   import { getInitialTheme, initTheme, toggleTheme } from "../src/lib/utils/utils";
   import Router from "svelte-spa-router";
   import Home from "./routes/Home.svelte";
+  import DBTESTVIEW from "./routes/DB_TEST_VIEW.svelte";
 
   const routes = {
     '/': Home,
-
+    '/dbtestview': DBTESTVIEW,
   }
 
 
@@ -16,11 +17,12 @@
   })
 </script>
 
-<div class="min-h-screen h-full flex flex-col bg-base-100 text-base-content overflow-hidden">
+<div class="min-h-screen h-screen flex flex-col bg-base-100 text-base-content overflow-hidden">
   <!-- Navbar -->
   <nav class="navbar border-b border-base-300 bg-base-200/80 backdrop-blur h-fit">
-    <div class="navbar-start">
-      <a href="/" class="text-xl font-bold text-primary">240 Darts</a>
+    <div class="navbar-start flex gap-x-3">
+      <a href="#/" class="text-xl font-bold text-primary">240 Darts</a>
+      <a href="#/dbtestview" class="text-xl font-bold text-primary">DB-Test</a>
     </div>
 
     <div class="navbar-end gap-2">
@@ -32,7 +34,7 @@
     </div>
   </nav>
 
-  <div class="flex size-full overflow-y-auto">
-    <Router {routes}></Router>
+  <div class="flex size-full overflow-y-aut">
+    <Router {routes}/>
   </div>
 </div>
