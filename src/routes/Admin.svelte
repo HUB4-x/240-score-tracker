@@ -426,9 +426,15 @@
       <h1 class="text-3xl font-bold">Database Test</h1>
       <p class="mt-2 text-base-content/70">Create and inspect players, boards and games stored in IndexedDB.</p>
     </div>
-
-    <button class="btn btn-ghost" type="button" onclick={() => void deleteDatabase()} disabled={isLoading}>Delelte database</button>
-    <button class="btn btn-ghost" type="button" onclick={() => void loadDatabaseContent()} disabled={isLoading}>Refresh database</button>
+    <div class="flex ml-auto gap-x-1">
+      <button class="btn btn-error" type="button" onclick={() => void deleteDatabase()} disabled={isLoading}>!Delelte database!</button>
+      <button class="btn btn-info" type="button" onclick={() => void loadDatabaseContent()} disabled={isLoading}>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>
+        Refresh database
+      </button>
+    </div>
   </header>
 
   <div class="tabs tabs-boxed w-fit">
@@ -455,11 +461,11 @@
     </div>
   {:else if activeTab === 'players'}
     <section class="flex flex-col gap-6">
-      <div class="card bg-base-200 shadow-md">
-        <div class="card-body">
-          <h2 class="card-title">Create player</h2>
+      <details class="collapse collapse-arrow bg-base-200 shadow-md">
+        <summary class="collapse-title text-xl font-semibold">Create player</summary>
 
-          <form class="grid gap-4 md:grid-cols-2" onsubmit={handleCreatePlayer}>
+        <div class="collapse-content">
+          <form class="grid gap-4 pt-2 md:grid-cols-2" onsubmit={handleCreatePlayer}>
             <label class="form-control">
               <span class="label-text mb-2">Username</span>
               <input class="input input-bordered" type="text" bind:value={playerUsername} maxlength="30" placeholder="DartMaster" required />
@@ -494,26 +500,27 @@
             </div>
           </form>
         </div>
-      </div>
+      </details>
 
-      <div class="card bg-base-200 shadow-md">
-        <div class="card-body">
-          <div class="flex flex-wrap items-center justify-between gap-4">
+
+      <div class="card min-h-0 flex-1 bg-base-200 shadow-md">
+        <div class="card-body min-h-0">
+          <div class="flex shrink-0 flex-wrap items-center justify-between gap-4">
             <div>
               <h2 class="card-title">Stored players</h2>
-              <p class="text-sm text-base-content/70">{players.length} {players.length === 1 ? 'player' : 'players'} stored</p>
+              <p class="text-sm text-base-content/70">{players.length} players stored</p>
             </div>
 
             <button class="btn btn-error btn-sm" type="button" onclick={() => void deleteAllPlayers()} disabled={players.length === 0}>Delete all players</button>
           </div>
 
           {#if players.length === 0}
-            <div class="rounded-md bg-base-100 p-8 text-center">
+            <div class="flex min-h-0 flex-1 items-center justify-center rounded-md bg-base-100 p-8 text-center">
               <p class="text-base-content/70">No players are stored yet.</p>
             </div>
           {:else}
-            <div class="overflow-x-auto">
-              <table class="table">
+            <div class="min-h-0 flex-1 overflow-auto">
+              <table class="table table-pin-rows">
                 <thead>
                   <tr>
                     <th>Player</th>
@@ -562,6 +569,78 @@
           {/if}
         </div>
       </div>
+
+      <!-- <div class="card bg-base-200 shadow-md">
+        <div class="card-body">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 class="card-title">Stored players</h2>
+              <p class="text-sm text-base-content/70">{players.length} {players.length === 1 ? 'player' : 'players'} stored</p>
+            </div>
+
+            <button class="btn btn-error btn-sm" type="button" onclick={() => void deleteAllPlayers()} disabled={players.length === 0}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+              </svg>
+              Delete all players
+            </button>
+          </div>
+
+          {#if players.length === 0}
+            <div class="rounded-md bg-base-100 p-8 text-center">
+              <p class="text-base-content/70">No players are stored yet.</p>
+            </div>
+          {:else}
+            <div class="overflow-x-auto">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Player</th>
+                    <th>Color</th>
+                    <th>Type</th>
+                    <th>Games</th>
+                    <th>Average</th>
+                    <th>Model</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody class="size-full ">
+                  {#each players as player (player.id)}
+                    <tr>
+                      <td>
+                        <div class="flex items-center gap-3">
+                          <div class="h-10 w-10 rounded-full" style:background-color={player.color}></div>
+
+                          <div>
+                            <div class="font-bold">{player.username}</div>
+
+                            {#if player.name}
+                              <div class="text-sm text-base-content/60">{player.name}</div>
+                            {/if}
+
+                            <div class="max-w-48 truncate font-mono text-xs text-base-content/40">{player.id}</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td><code>{player.color}</code></td>
+                      <td><span class="badge badge-outline">{player.isGuest ? 'Guest' : 'Permanent'}</span></td>
+                      <td>{player.statistics.gamesPlayed}</td>
+                      <td>{player.statistics.threeDartAverage.toFixed(2)}</td>
+                      <td>v{player.modelVersion}</td>
+
+                      <td class="text-right">
+                        <button class="btn btn-ghost btn-sm" type="button" onclick={() => void deletePlayer(player)}>Delete</button>
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          {/if}
+        </div>
+      </div> -->
     </section>
   {:else if activeTab === 'boards'}
     <section class="flex flex-col gap-6">
