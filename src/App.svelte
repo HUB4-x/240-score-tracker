@@ -22,7 +22,7 @@
   <nav class="navbar border-b border-base-300 bg-base-200/80 backdrop-blur h-fit">
     <div class="navbar-start flex gap-x-3">
       <a href="#/" class="text-xl font-bold text-primary">240 Darts</a>
-      <a href="#/dbtestview" class="text-xl font-bold text-primary">DB-Test</a>
+      <a href="#/dbtestview" class="text-xl font-bold link link-info">DB-Test</a>
     </div>
 
     <div class="navbar-end gap-2">
