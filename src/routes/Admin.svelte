@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import { db } from '../db/database';
+  import { db, deleteDatabase } from '../db/database';
   import { createPlayer, type Player } from '../db/models/player_model';
   import { createBoard, createStandard180Segments, createStandard240Segments, type Board } from '../db/models/board_model';
   import { createGame, type EntryMode, type ExitMode, type Game, type GameParticipant, type GamePlayerSnapshot } from '../db/models/game_model';
@@ -427,6 +427,7 @@
       <p class="mt-2 text-base-content/70">Create and inspect players, boards and games stored in IndexedDB.</p>
     </div>
 
+    <button class="btn btn-ghost" type="button" onclick={() => void deleteDatabase()} disabled={isLoading}>Delelte database</button>
     <button class="btn btn-ghost" type="button" onclick={() => void loadDatabaseContent()} disabled={isLoading}>Refresh database</button>
   </header>
 

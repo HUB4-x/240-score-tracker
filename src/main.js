@@ -1,15 +1,21 @@
-import "./app.css";
-import { mount } from "svelte";
-import App from "./App.svelte";
+import { mount } from 'svelte';
 
-const target = document.getElementById("app");
+import './app.css';
+import App from './App.svelte';
+import { initializeDatabase } from './db/database';
 
-if (!target) {
-  throw new Error("App target element not found");
+async function startApp() {
+  const target = document.getElementById('app');
+
+  if (!target) {
+    throw new Error('Could not find the #app element.');
+  }
+
+  await initializeDatabase();
+
+  mount(App, {
+    target
+  });
 }
 
-const app = mount(App, {
-  target
-});
-
-export default app;
+void startApp();

@@ -4,11 +4,11 @@
 
   import { initTheme, toggleTheme } from './lib/utils/utils';
   import Home from './routes/Home.svelte';
-  import DBTESTVIEW from './routes/DB_TEST_VIEW.svelte';
+  import Admin from './routes/Admin.svelte';
 
   const routes = {
     '/': Home,
-    '/dbtestview': DBTESTVIEW
+    '/admin': Admin
   };
 
   onMount(() => {
@@ -20,12 +20,12 @@
   <nav class="navbar shrink-0 border-b border-base-300 bg-base-200/80 backdrop-blur">
     <div class="navbar-start flex gap-x-3">
       <a href="#/" class="text-xl font-bold text-primary">240 Darts</a>
-      <a href="#/dbtestview" class="link link-info text-xl font-bold">DB-Test</a>
     </div>
 
     <div class="navbar-end gap-2">
       <button class="btn btn-ghost" type="button">Stats</button>
       <button class="btn btn-ghost" type="button">Players</button>
+      <a href="#/admin" class="link link-info font-bold">Admin</a>
       <button class="btn btn-primary" type="button" onclick={toggleTheme}>Theme</button>
     </div>
   </nav>

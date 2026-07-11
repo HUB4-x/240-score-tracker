@@ -1,3 +1,5 @@
+// src/db/database.ts
+
 import Dexie, { type EntityTable } from 'dexie';
 
 import type { Player } from './models/player_model';
@@ -8,39 +10,18 @@ import { STANDARD_180_BOARD, STANDARD_240_BOARD } from './models/board_model';
 
 import type { Game } from './models/game_model';
 
-
-/**
- * Typed Dexie database used by the application.
- */
 export const db = new Dexie('240-dart-database') as Dexie & {
   players: EntityTable<Player, 'id'>;
   boards: EntityTable<Board, 'id'>;
   games: EntityTable<Game, 'id'>;
 };
 
-
-/**
- * Version 1 of the IndexedDB schema.
- *
- * Only the properties listed here are indexed. Every other property
- * is still stored as part of the corresponding object.
- */
 db.version(1).stores({
   players: 'id, username, modelVersion',
   boards: 'id, name, modelVersion',
   games: 'id, status, createdAt, startedAt, finishedAt, modelVersion'
 });
 
-
-/**
- * Default guest players included with the application.
- *
- * Fixed IDs ensure that the players are not duplicated whenever the
- * application starts.
- *
- * These players are permanently stored in IndexedDB, while `isGuest`
- * marks them as reusable guest profiles.
- */
 export const DEFAULT_GUEST_PLAYERS: Player[] = [
   {
     id: 'default-guest-player-1',
@@ -76,36 +57,29 @@ export const DEFAULT_GUEST_PLAYERS: Player[] = [
   }
 ];
 
+const DEFAULT_BOARDS: Board[] = [
+  STANDARD_180_BOARD,
+  STANDARD_240_BOARD
+];
 
 /**
- * Adds default players and boards that are not currently stored.
+ * Inserts only default records that are currently missing.
  *
- * Existing records are not overwritten. This means that changes made
- * to an existing default player remain intact.
- *
- * Deleted default records are restored the next time the application
- * initializes the database.
+ * Existing default players and boards are left unchanged.
  */
-async function seedDefaultData(): Promise<void> {
+async function seedMissingDefaultData(): Promise<void> {
   await db.transaction('rw', db.players, db.boards, async () => {
-    const defaultPlayerIds = DEFAULT_GUEST_PLAYERS.map((player) => player.id);
-    const storedDefaultPlayers = await db.players.bulkGet(defaultPlayerIds);
+    const storedPlayers = await db.players.bulkGet(DEFAULT_GUEST_PLAYERS.map((player) => player.id));
 
-    const missingPlayers = DEFAULT_GUEST_PLAYERS.filter((player, index) => storedDefaultPlayers[index] === undefined);
+    const missingPlayers = DEFAULT_GUEST_PLAYERS.filter((player, index) => storedPlayers[index] === undefined);
 
     if (missingPlayers.length > 0) {
       await db.players.bulkAdd(missingPlayers);
     }
 
-    const defaultBoards = [
-      STANDARD_180_BOARD,
-      STANDARD_240_BOARD
-    ];
+    const storedBoards = await db.boards.bulkGet(DEFAULT_BOARDS.map((board) => board.id));
 
-    const defaultBoardIds = defaultBoards.map((board) => board.id);
-    const storedDefaultBoards = await db.boards.bulkGet(defaultBoardIds);
-
-    const missingBoards = defaultBoards.filter((board, index) => storedDefaultBoards[index] === undefined);
+    const missingBoards = DEFAULT_BOARDS.filter((board, index) => storedBoards[index] === undefined);
 
     if (missingBoards.length > 0) {
       await db.boards.bulkAdd(missingBoards);
@@ -113,20 +87,18 @@ async function seedDefaultData(): Promise<void> {
   });
 }
 
-
 /**
- * Opens the IndexedDB database and inserts the default application data.
+ * Opens the database.
  *
- * Call this once before mounting the Svelte application.
- *
- * @throws When the database cannot be opened or initialized.
+ * Dexie creates the database automatically when it does not exist.
+ * Afterwards, missing default players and boards are inserted.
  */
 export async function initializeDatabase(): Promise<void> {
   try {
     await db.open();
-    await seedDefaultData();
+    await seedMissingDefaultData();
 
-    console.info(`Database "${db.name}" initialized successfully.`);
+    console.info(`Database "${db.name}" initialized.`);
   } catch (error) {
     console.error('Could not initialize the database:', error);
 
@@ -136,21 +108,10 @@ export async function initializeDatabase(): Promise<void> {
   }
 }
 
-
-/**
- * Closes the current database connection.
- */
 export function closeDatabase(): void {
   db.close();
 }
 
-
-/**
- * Deletes the complete IndexedDB database.
- *
- * The default players and boards are recreated the next time
- * initializeDatabase() is called.
- */
 export async function deleteDatabase(): Promise<void> {
   db.close();
   await Dexie.delete(db.name);
