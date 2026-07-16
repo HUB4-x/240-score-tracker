@@ -199,7 +199,7 @@
 <main class="mx-auto w-full max-w-7xl px-4 py-8">
     <!-- Hero -->
     <section class="hero h-70 rounded-3xl bg-base-200 shadow-xl">
-      <div class="hero-content grid w-full gap-10 lg:grid-cols-2">
+      <div class="hero-content grid w-full gap-10 grid-cols-2">
         <div>
           <!-- <div class="rounded-full badge badge-info mb-4">Offline First</div> -->
 
@@ -219,7 +219,7 @@
         </div>
 
         <div class="rounded-3xl border border-base-300 bg-base-100 p-6">
-          <div class="stats stats-vertical w-full lg:stats-horizontal">
+          <div class="stats w-full stats-horizontal">
             <div class="stat">
               <div class="stat-title">Finished Games</div>
               <div class="stat-value text-primary">{landingPageStats.game_stats.games_finished}</div>
@@ -243,7 +243,7 @@
     </section>
 
     <!-- Quick Actions -->
-    <section class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <section class="mt-8 grid gap-4 md:grid-cols-2 grid-cols-4">
       <a href="#/create_new_game" class="card bg-base-200 shadow-xl transition hover:-translate-y-1">
         <div class="card-body">
           <h2 class="card-title">🎯 New Game</h2>
