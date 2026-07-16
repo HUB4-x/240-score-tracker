@@ -9,6 +9,9 @@
   import CreateNewGame from './routes/game/Create_new_Game.svelte';
   import PlayGame from './routes/game/Play_Game.svelte';
 
+  import devLogo_dark from './assets/favicons/h-dev-clean_darklogo_wo_bg.png'
+  import devLogo_light from './assets/favicons/h-dev-clean_lightlogo_wo_bg.png'
+
   const routes = {
     '/': Home,
     '/admin': Admin,
@@ -33,9 +36,9 @@
         <div class="avatar">
           <div class="size-9 rounded-full border border-primary/40 bg-base-100">
             {#if $current_theme === 'dart_240_dark'}
-            <img src="/src/assets/favicons/h-dev-clean_lightlogo_wo_bg.png" alt="Developer logo" />
+            <img src={devLogo_light} alt="Developer logo" />
             {:else}
-            <img src="/src/assets/favicons/h-dev-clean_darklogo_wo_bg.png" alt="Developer logo" />
+            <img src={devLogo_dark} alt="Developer logo" />
             {/if}
           </div>
         </div>
@@ -53,9 +56,9 @@
           <div class="avatar">
             <div class="size-12 rounded-full border border-primary/40">
             {#if $current_theme === 'dart_240_dark'}
-            <img src="/src/assets/favicons/h-dev-clean_lightlogo_wo_bg.png" alt="Developer logo" />
+            <img src={devLogo_light} alt="Developer logo" />
             {:else}
-            <img src="/src/assets/favicons/h-dev-clean_darklogo_wo_bg.png" alt="Developer logo" />
+            <img src={devLogo_dark} alt="Developer logo" />
             {/if}
             </div>
           </div>
