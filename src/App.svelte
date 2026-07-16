@@ -6,10 +6,12 @@
   import Home from './routes/Home.svelte';
   import Admin from './routes/Admin.svelte';
   import { current_theme } from './lib/stores/UI_Values';
+  import CreateNewGame from './routes/game/Create_new_Game.svelte';
 
   const routes = {
     '/': Home,
-    '/admin': Admin
+    '/admin': Admin,
+    '/create_new_game': CreateNewGame,
   };
 
   onMount(() => {

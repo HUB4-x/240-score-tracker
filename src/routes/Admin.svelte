@@ -559,7 +559,7 @@
                       <td>v{player.modelVersion}</td>
 
                       <td class="text-right">
-                        <button class="btn btn-ghost btn-sm" type="button" onclick={() => void deletePlayer(player)}>Delete</button>
+                        <button class="btn btn-error btn-outline btn-sm" type="button" onclick={() => void deletePlayer(player)}>Delete</button>
                       </td>
                     </tr>
                   {/each}
@@ -677,7 +677,7 @@
                     </details>
 
                     <div class="card-actions justify-end">
-                      <button class="btn btn-ghost btn-sm" type="button" onclick={() => void deleteBoard(board)}>Delete</button>
+                      <button class="btn btn-error btn-outline btn-sm" type="button" onclick={() => void deleteBoard(board)}>Delete</button>
                     </div>
                   </div>
                 </article>
@@ -803,7 +803,7 @@
               <p class="text-sm text-base-content/70">{games.length} {games.length === 1 ? 'game' : 'games'} stored</p>
             </div>
 
-            <button class="btn btn-error btn-sm" type="button" onclick={() => void deleteAllGames()} disabled={games.length === 0}>Delete all games</button>
+            <button class="btn btn-error btn-outline btn-sm" type="button" onclick={() => void deleteAllGames()} disabled={games.length === 0}>Delete all games</button>
           </div>
 
           {#if games.length === 0}
@@ -890,7 +890,7 @@
                     </details>
 
                     <div class="card-actions justify-end">
-                      <button class="btn btn-error btn-sm" type="button" onclick={() => void deleteGame(game)}>Delete</button>
+                      <button class="btn btn-error btn-outline btn-sm" type="button" onclick={() => void deleteGame(game)}>Delete</button>
                     </div>
                   </div>
                 </article>
