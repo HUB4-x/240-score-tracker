@@ -1,6 +1,6 @@
 import type { BoardSegment, BoardSegmentClassification } from "./board_model";
 
-export type GameStatus = 'setup' | 'running' | 'paused' | 'finished' | 'cancelled';
+export type GameStatus = 'running' | 'finished';
 
 export type EntryMode = 'single-in' | 'double-in' | 'master-in';
 
@@ -446,7 +446,7 @@ export function createGame(input: CreateGameInput): Game {
     return {
         id: crypto.randomUUID(),
         createdAt: now,
-        status: 'setup',
+        status: 'running',
         board: {
             ...input.board,
             segments: input.board.segments.map((segment) => ({
