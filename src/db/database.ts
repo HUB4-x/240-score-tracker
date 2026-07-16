@@ -22,6 +22,12 @@ db.version(1).stores({
   games: 'id, status, createdAt, startedAt, finishedAt, modelVersion'
 });
 
+db.version(2).stores({
+  players: 'id, username, isGuest',
+  boards: 'id, name',
+  games: 'id, status, createdAt, updatedAt'
+});
+
 export const DEFAULT_GUEST_PLAYERS: Player[] = [
   {
     id: 'default-guest-player-1',
