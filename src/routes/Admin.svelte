@@ -878,6 +878,7 @@
 
                     <div class="grid gap-2 text-sm sm:grid-cols-2">
                       <div><span class="font-semibold">Created:</span> {formatDate(game.createdAt)}</div>
+                      <div><span class="font-semibold">Updated:</span> {formatDate(game.updatedAt)}</div>
                       <div><span class="font-semibold">Winner:</span> {getWinnerName(game)}</div>
                     </div>
 

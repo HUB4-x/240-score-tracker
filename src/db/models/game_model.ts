@@ -320,6 +320,11 @@ export interface Game {
     createdAt: string;
 
     /**
+     * Date and time when the game was last modified.
+     */
+    updatedAt: string;
+
+    /**
      * Date and time when the game started.
      */
     startedAt?: string;
@@ -446,6 +451,7 @@ export function createGame(input: CreateGameInput): Game {
     return {
         id: crypto.randomUUID(),
         createdAt: now,
+        updatedAt: now,
         status: 'running',
         board: {
             ...input.board,

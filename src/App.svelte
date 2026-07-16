@@ -7,11 +7,16 @@
   import Admin from './routes/Admin.svelte';
   import { current_theme } from './lib/stores/UI_Values';
   import CreateNewGame from './routes/game/Create_new_Game.svelte';
+  import PlayGame from './routes/game/Play_Game.svelte';
 
   const routes = {
     '/': Home,
     '/admin': Admin,
     '/create_new_game': CreateNewGame,
+    '/game/:gameId': PlayGame,
+    // '/game/:gameId/details': GameDetails,
+    // '/game/:gameId/statistic': GameDetails,
+    
   };
 
   onMount(() => {
@@ -20,10 +25,10 @@
 </script>
 
 <div class="flex h-screen min-h-screen flex-col overflow-hidden bg-base-100 text-base-content select-none">
-  <nav class="navbar shrink-0 border-b border-base-300 bg-base-200/80 backdrop-blur px-3 z-90">
+  <nav class="navbar shrink-0 min-w-fit border-b border-base-300 bg-base-200/80 backdrop-blur px-3 z-90">
     <div class="navbar-start flex gap-x-3">
       <a href="#/" class="inline-block text-xl font-bold text-primary transition-transform duration-200 ease-out hover:scale-110">240 Darts</a>
-      <div class="dropdown dropdown-center">
+      <div class="dropdown dropdown-center min-w-30">
       <button class="btn btn-ghost gap-2 px-2" type="button" tabindex="0" aria-label="Open developer links">
         <div class="avatar">
           <div class="size-9 rounded-full border border-primary/40 bg-base-100">

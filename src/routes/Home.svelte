@@ -50,6 +50,7 @@
 
 
   let current_running_game: Game | undefined = $state(undefined)
+  let last_updated_game: Game | undefined = $state(undefined)
   type TopPlayerCategory = 'winrate' | 'three-dart-average' | 'total-points' | 'highest-score';
 
   let selectedTopPlayerCategory: TopPlayerCategory = $state('winrate');
@@ -80,6 +81,8 @@
     landingPageStats = await calc_landing_page_stats()
 
     current_running_game = games.find((game) => game.status === 'running')
+
+    last_updated_game = await db.games.orderBy('updatedAt').last();
   });
 
 
@@ -214,7 +217,7 @@
 
           <div class="mt-8 flex flex-wrap gap-3">
             <a href="#/create_new_game" class="btn btn-primary btn-lg">Start New Game</a>
-            <a href="/" class="btn btn-outline btn-lg">Continue Game</a>
+            <a href="#/game/{last_updated_game?.id}" class="btn btn-outline btn-lg {last_updated_game? '' : 'btn-disabled'}">Continue Last Game</a>
           </div>
         </div>
 
